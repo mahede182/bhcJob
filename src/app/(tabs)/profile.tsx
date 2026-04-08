@@ -1,28 +1,60 @@
-import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import React from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import {
+  BorderRadius,
+  COLORS,
+  FontSizes,
+  Shadows,
+  Spacing,
+} from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React from "react";
+import {
+  Linking,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import Toast from 'react-native-toast-message';
-import MenuItem from '@/components/ui/MenuItem';
+import Toast from "react-native-toast-message";
+import MenuItem from "@/components/ui/MenuItem";
 
 export default function ProfileScreen() {
   const router = useRouter();
 
   const handleSignOut = () => {
     Toast.show({
-      type: 'info',
-      text1: 'Signed Out',
-      text2: 'You have been signed out successfully.',
+      type: "info",
+      text1: "Signed Out",
+      text2: "You have been signed out successfully.",
     });
-    router.replace('/sign-in');
+    router.replace("/sign-in");
+  };
+
+  const handleOpenBlog = async () => {
+    try {
+      const url = "https://bhcjobs.com/blog";
+      const supported = await Linking.canOpenURL(url);
+      if (supported) {
+        await Linking.openURL(url);
+      } else {
+        Toast.show({
+          type: "error",
+          text1: "Error",
+          text2: "Unable to open blog link",
+        });
+      }
+    } catch (error) {}
   };
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{ paddingBottom: 100 }}
+      >
         {/* Profile Header */}
         <View style={styles.header}>
           <View style={styles.profileInfo}>
@@ -34,7 +66,11 @@ export default function ProfileScreen() {
               <Text style={styles.email}>john.doe@example.com</Text>
             </View>
             <TouchableOpacity style={styles.editButton}>
-              <Ionicons name="create-outline" size={20} color={COLORS.primary} />
+              <Ionicons
+                name="create-outline"
+                size={20}
+                color={COLORS.primary}
+              />
             </TouchableOpacity>
           </View>
         </View>
@@ -63,6 +99,11 @@ export default function ProfileScreen() {
           <MenuItem icon="settings-outline" title="Settings" />
           <MenuItem icon="help-circle-outline" title="Help Center" />
           <MenuItem
+            icon="newspaper-outline"
+            title="Blog"
+            onPress={handleOpenBlog}
+          />
+          <MenuItem
             icon="log-out-outline"
             title="Sign Out"
             color={COLORS.error}
@@ -74,11 +115,10 @@ export default function ProfileScreen() {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: "#F8F9FA",
   },
   header: {
     paddingTop: 60,
@@ -90,16 +130,16 @@ const styles = StyleSheet.create({
     ...Shadows.sm,
   },
   profileInfo: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   avatarWrapper: {
     width: 80,
     height: 80,
     borderRadius: 40,
     backgroundColor: COLORS.primaryLight,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderWidth: 3,
     borderColor: COLORS.white,
     ...Shadows.sm,
@@ -110,7 +150,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: FontSizes.xxl,
-    fontWeight: '800',
+    fontWeight: "800",
     color: COLORS.white,
     letterSpacing: -0.5,
   },
@@ -118,18 +158,18 @@ const styles = StyleSheet.create({
     fontSize: FontSizes.md,
     color: COLORS.gray200,
     marginTop: 2,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   editButton: {
     width: 36,
     height: 36,
     borderRadius: 18,
     backgroundColor: COLORS.gray100,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   statsRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingHorizontal: Spacing.four,
     gap: 16,
     marginTop: -20,
@@ -139,20 +179,20 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.white,
     padding: 16,
     borderRadius: BorderRadius.lg,
-    alignItems: 'center',
+    alignItems: "center",
     ...Shadows.md,
   },
   statValue: {
     fontSize: FontSizes.xl,
-    fontWeight: '800',
+    fontWeight: "800",
     color: COLORS.primary,
   },
   statLabel: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.gray500,
     marginTop: 4,
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
   },
   menuContainer: {
     marginTop: Spacing.five,

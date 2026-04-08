@@ -1,24 +1,36 @@
-import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
-import React, { useState } from 'react';
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import {
+  BorderRadius,
+  COLORS,
+  FontSizes,
+  Shadows,
+  Spacing,
+} from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import {
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-import Button from '@/components/ui/Button';
-import Divider from '@/components/ui/Divider';
-import Header from '@/components/ui/Header';
-import Input from '@/components/ui/Input';
-import Animated, { FadeInDown } from 'react-native-reanimated';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import Button from "@/components/ui/Button";
+import Divider from "@/components/ui/Divider";
+import Header from "@/components/ui/Header";
+import Input from "@/components/ui/Input";
+import Animated, { FadeInDown } from "react-native-reanimated";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function SignInScreen() {
   const router = useRouter();
-  const [phone, setPhone] = useState('');
-  const [password, setPassword] = useState('');
+  const [phone, setPhone] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSignIn = () => {
     // Temporary: just navigate to tabs
-    router.replace('/(tabs)');
+    router.replace("/(tabs)");
   };
 
   return (
@@ -70,8 +82,10 @@ export default function SignInScreen() {
             <Divider />
 
             <View style={styles.switchRow}>
-              <Text style={styles.switchText}>Don't have an account? </Text>
-              <TouchableOpacity onPress={() => router.push('/sign-up')}>
+              <Text style={styles.switchText}>
+                Don&apos;t have an account?{" "}
+              </Text>
+              <TouchableOpacity onPress={() => router.push("/sign-up")}>
                 <Text style={styles.switchLink}>Sign Up</Text>
               </TouchableOpacity>
             </View>
@@ -85,7 +99,7 @@ export default function SignInScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F8F9FA',
+    backgroundColor: "#F8F9FA",
   },
   scroll: {
     flex: 1,
@@ -109,8 +123,8 @@ const styles = StyleSheet.create({
     ...Shadows.md,
   },
   avatarRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 24,
     gap: 12,
   },
@@ -119,28 +133,28 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 24,
     backgroundColor: COLORS.primaryLight,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   cardTitle: {
     fontSize: FontSizes.xxl,
-    fontWeight: '800',
+    fontWeight: "800",
     color: COLORS.gray900,
     letterSpacing: -0.5,
   },
   forgotRow: {
-    alignSelf: 'flex-end',
+    alignSelf: "flex-end",
     marginBottom: 20,
   },
   forgotText: {
     fontSize: FontSizes.sm,
     color: COLORS.primary,
-    fontWeight: '600',
+    fontWeight: "600",
   },
   switchRow: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 15,
   },
   switchText: {
@@ -150,6 +164,6 @@ const styles = StyleSheet.create({
   switchLink: {
     fontSize: FontSizes.sm,
     color: COLORS.primary,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 });
