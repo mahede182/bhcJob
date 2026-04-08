@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, ActivityIndicator, Alert } from 'react-native';
-import { useRouter, useLocalSearchParams } from 'expo-router';
-import { Ionicons } from '@expo/vector-icons';
-import { COLORS, FontSizes, BorderRadius, Spacing, Shadows } from '@/constants/theme';
+import Button from '@/components/ui/Button';
 import Header from '@/components/ui/Header';
 import Input from '@/components/ui/Input';
-import Button from '@/components/ui/Button';
+import { API } from '@/constants/api';
+import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { useLocalSearchParams, useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-import { ENDPOINTS } from '@/constants/api';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 import Toast from 'react-native-toast-message';
 
@@ -29,7 +30,7 @@ export default function VerifyOtpScreen() {
 
     setLoading(true);
     try {
-      const response = await fetch(ENDPOINTS.verifyOtp, {
+      const response = await fetch(API.verifyOtp, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ phone, otp }),
@@ -62,10 +63,10 @@ export default function VerifyOtpScreen() {
   };
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ flexGrow: 1 }}>
         <Header actionLabel="Sign In" actionRoute="/sign-in" />
-        
+
         <View style={styles.cardWrapper}>
           <Animated.View entering={FadeInDown.duration(600)} style={styles.card}>
             <View style={styles.iconCircle}>
@@ -97,12 +98,12 @@ export default function VerifyOtpScreen() {
           </Animated.View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#F8F9FA' },
+  container: { flex: 1, backgroundColor: '#F8F9FA' },
   cardWrapper: { padding: Spacing.four, flex: 1, justifyContent: 'center', marginTop: -40 },
   card: {
     backgroundColor: COLORS.white,

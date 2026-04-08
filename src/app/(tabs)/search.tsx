@@ -3,6 +3,7 @@ import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/t
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const CATEGORIES = [
   { id: 1, name: 'Technology', icon: 'laptop-outline' },
@@ -17,7 +18,7 @@ const RECENT_SEARCHES = ['Software Engineer', 'Product Designer', 'Remote Jobs']
 
 export default function SearchScreen() {
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Find Jobs</Text>
         <Input
@@ -55,12 +56,12 @@ export default function SearchScreen() {
           </View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#F8F9FA' },
+  container: { flex: 1, backgroundColor: '#F8F9FA' },
   header: {
     paddingTop: 60,
     paddingHorizontal: Spacing.four,

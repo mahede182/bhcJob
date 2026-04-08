@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
-import { ScrollView, View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import { useRouter } from 'expo-router';
+import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
 import { Ionicons } from '@expo/vector-icons';
-import { COLORS, FontSizes, BorderRadius, Spacing, Shadows } from '@/constants/theme';
+import { useRouter } from 'expo-router';
+import React, { useState } from 'react';
+import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
-import Header from '@/components/ui/Header';
-import Input from '@/components/ui/Input';
 import Button from '@/components/ui/Button';
 import Divider from '@/components/ui/Divider';
+import Header from '@/components/ui/Header';
+import Input from '@/components/ui/Input';
 import Animated, { FadeInDown } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -21,7 +22,7 @@ export default function SignInScreen() {
   };
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <Header actionLabel="Sign Up" actionRoute="/sign-up" />
 
@@ -77,12 +78,12 @@ export default function SignInScreen() {
           </Animated.View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
   },
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   blueTop: {
-    height: 60,
+    height: 100,
     backgroundColor: COLORS.primary,
     borderBottomLeftRadius: 30,
     borderBottomRightRadius: 30,

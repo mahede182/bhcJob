@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import type { ApiResponse } from '@/types/api';
+import type { ApiResponse } from '@/@types/api';
+import { useEffect, useState } from 'react';
 
 interface UseFetchResult<T> {
   data: T | null;

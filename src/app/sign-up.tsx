@@ -4,17 +4,13 @@ import Divider from '@/components/ui/Divider';
 import DropdownField from '@/components/ui/DropdownField';
 import Header from '@/components/ui/Header';
 import Input from '@/components/ui/Input';
+import { GENDER } from '@/constants/data';
 import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
-
-const GENDER_OPTIONS = [
-  { label: 'Male', value: 'male' },
-  { label: 'Female', value: 'female' },
-  { label: 'Other', value: 'other' },
-];
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function SignUpScreen() {
   const router = useRouter();
@@ -38,7 +34,7 @@ export default function SignUpScreen() {
   };
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         <Header actionLabel="Sign In" actionRoute="/sign-in" />
 
@@ -82,7 +78,7 @@ export default function SignUpScreen() {
                 <DropdownField
                   label="Gender"
                   value={form.gender}
-                  options={GENDER_OPTIONS}
+                  options={GENDER}
                   onChange={updateField('gender')}
                   placeholder="Select"
                 />
@@ -136,12 +132,12 @@ export default function SignUpScreen() {
           </Animated.View>
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
   },

@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 import React from 'react';
 import { Dimensions, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { FadeInDown, FadeInUp } from 'react-native-reanimated';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
@@ -12,7 +13,7 @@ export default function OnboardingScreen() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.content}>
         <Animated.View entering={FadeInUp.delay(200).duration(800)} style={styles.logoWrapper}>
           <Image
@@ -46,7 +47,7 @@ export default function OnboardingScreen() {
           </TouchableOpacity>
         </Animated.View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 

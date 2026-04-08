@@ -3,7 +3,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform, View } from 'react-native';
-
+//TODO: use hydrate login
 export default function TabsLayout() {
   return (
     <Tabs

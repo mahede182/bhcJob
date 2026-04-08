@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
-import Animated, { FadeInDown } from 'react-native-reanimated';
-import { COLORS, FontSizes, BorderRadius, Spacing, Shadows } from '@/constants/theme';
+import type { Job } from '@/@types/api';
 import { getImageUrl } from '@/constants/api';
-import type { Job } from '@/types/api';
+import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 interface JobCardProps {
   job: Job;
@@ -18,7 +18,7 @@ export default function JobCard({ job, index }: JobCardProps) {
     : `${job.currency}${job.min_salary}`;
 
   return (
-    <Animated.View 
+    <Animated.View
       entering={FadeInDown.delay(index * 100).duration(500)}
     >
       <TouchableOpacity style={styles.container} activeOpacity={0.7}>

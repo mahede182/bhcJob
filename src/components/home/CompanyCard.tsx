@@ -1,11 +1,11 @@
-import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Image } from 'expo-image';
-import { Ionicons } from '@expo/vector-icons';
-import Animated, { FadeInLeft } from 'react-native-reanimated';
-import { COLORS, FontSizes, BorderRadius, Spacing, Shadows } from '@/constants/theme';
+import type { Company } from '@/@types/api';
 import { getImageUrl } from '@/constants/api';
-import type { Company } from '@/types/api';
+import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
+import { Ionicons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
+import React from 'react';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import Animated, { FadeInLeft } from 'react-native-reanimated';
 
 interface CompanyCardProps {
   company: Company;

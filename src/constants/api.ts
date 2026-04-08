@@ -1,7 +1,7 @@
 export const API_BASE = 'https://dev.bhcjobs.com/api';
 export const STORAGE_BASE = 'https://dev.bhcjobs.com/storage';
 
-export const ENDPOINTS = {
+export const API = {
   industries: `${API_BASE}/industry/get`,
   jobs: `${API_BASE}/job/get`,
   companies: `${API_BASE}/company/get`,

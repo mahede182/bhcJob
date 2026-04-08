@@ -1,6 +1,6 @@
+import type { Industry } from '@/@types/api';
 import { getImageUrl } from '@/constants/api';
 import { BorderRadius, COLORS, FontSizes, Shadows } from '@/constants/theme';
-import type { Industry } from '@/types/api';
 import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';

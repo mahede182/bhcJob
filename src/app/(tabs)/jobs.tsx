@@ -1,20 +1,21 @@
-import React from 'react';
-import { View, Text, StyleSheet, FlatList, ActivityIndicator, TouchableOpacity } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
-import { COLORS, FontSizes, Spacing, Shadows } from '@/constants/theme';
-import { ENDPOINTS } from '@/constants/api';
-import { useFetch } from '@/hooks/useFetch';
-import type { Job } from '@/types/api';
-import Header from '@/components/ui/Header';
+import type { Job } from '@/@types/api';
 import JobCard from '@/components/home/JobCard';
+import Header from '@/components/ui/Header';
+import { API } from '@/constants/api';
+import { COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
+import { useFetch } from '@/hooks/useFetch';
+import { Ionicons } from '@expo/vector-icons';
+import React from 'react';
+import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function JobsScreen() {
-  const { data: jobs, loading } = useFetch<Job[]>(ENDPOINTS.jobs);
+  const { data: jobs, loading } = useFetch<Job[]>(API.jobs);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.container}>
       <Header />
-      
+
       <View style={styles.content}>
         <View style={styles.titleSection}>
           <View style={styles.titleRow}>
@@ -40,12 +41,12 @@ export default function JobsScreen() {
           />
         )}
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  container: {
     flex: 1,
     backgroundColor: '#F8F9FA',
   },

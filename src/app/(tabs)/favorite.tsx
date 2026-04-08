@@ -2,6 +2,7 @@ import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/t
 import { Ionicons } from '@expo/vector-icons';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const SAVED_JOBS = [
   { id: 1, title: 'Senior UX Designer', company: 'Google', location: 'Mountain View, CA', salary: '$120k - $180k' }
@@ -9,7 +10,7 @@ const SAVED_JOBS = [
 
 export default function FavoriteScreen() {
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={{ paddingBottom: 100 }}>
         <View style={styles.header}>
           <Text style={styles.title}>Your Favorites</Text>
@@ -50,12 +51,12 @@ export default function FavoriteScreen() {
           </View>
         )}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: '#F8F9FA' },
+  container: { flex: 1, backgroundColor: '#F8F9FA' },
   header: {
     paddingTop: 60,
     paddingHorizontal: Spacing.four,

@@ -1,8 +1,8 @@
+import { BorderRadius, COLORS, FontSizes, Shadows } from '@/constants/theme';
 import React from 'react';
-import { Text, StyleSheet, ActivityIndicator, type ViewStyle } from 'react-native';
-import Animated, { useSharedValue, useAnimatedStyle, withSpring, runOnJS } from 'react-native-reanimated';
+import { ActivityIndicator, StyleSheet, Text, type ViewStyle } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { COLORS, FontSizes, BorderRadius, Spacing, Shadows } from '@/constants/theme';
+import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
 
 interface ButtonProps {
   title: string;

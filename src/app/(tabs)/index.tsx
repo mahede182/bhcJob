@@ -1,7 +1,7 @@
-import { ENDPOINTS } from '@/constants/api';
+import type { Company, Industry, Job } from '@/@types/api';
+import { API } from '@/constants/api';
 import { COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
 import { useFetch } from '@/hooks/useFetch';
-import type { Company, Industry, Job } from '@/types/api';
 import React from 'react';
 import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
 
@@ -12,14 +12,15 @@ import SectionHeader from '@/components/ui/SectionHeader';
 import CompanyCard from '@/components/home/CompanyCard';
 import IndustryCard from '@/components/home/IndustryCard';
 import JobCard from '@/components/home/JobCard';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function HomeScreen() {
-  const { data: industries, loading: indLoading } = useFetch<Industry[]>(ENDPOINTS.industries);
-  const { data: jobs, loading: jobsLoading } = useFetch<Job[]>(ENDPOINTS.jobs);
-  const { data: companies, loading: compLoading } = useFetch<Company[]>(ENDPOINTS.companies);
+  const { data: industries, loading: indLoading } = useFetch<Industry[]>(API.industries);
+  const { data: jobs, loading: jobsLoading } = useFetch<Job[]>(API.jobs);
+  const { data: companies, loading: compLoading } = useFetch<Company[]>(API.companies);
 
   return (
-    <View style={styles.screen}>
+    <SafeAreaView style={styles.container}>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
@@ -78,12 +79,12 @@ export default function HomeScreen() {
           )}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  screen: {
+  container: {
     flex: 1,
 
   },
