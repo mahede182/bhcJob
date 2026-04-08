@@ -1,23 +1,33 @@
-import type { Company, Industry, Job } from '@/@types/api';
-import { API } from '@/constants/api';
-import { COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
-import { useFetch } from '@/hooks/useFetch';
-import React from 'react';
-import { ActivityIndicator, FlatList, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { useGetIndustriesQuery } from "@/store/api/industriesApi";
+import { useGetJobsQuery } from "@/store/api/jobsApi";
+import { useGetCompaniesQuery } from "@/store/api/companiesApi";
+import { COLORS, FontSizes, Shadows, Spacing } from "@/constants/theme";
+import React from "react";
+import {
+  ActivityIndicator,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
-import Header from '@/components/ui/Header';
-import Input from '@/components/ui/Input';
-import SectionHeader from '@/components/ui/SectionHeader';
+import Header from "@/components/ui/Header";
+import Input from "@/components/ui/Input";
+import SectionHeader from "@/components/ui/SectionHeader";
 
-import CompanyCard from '@/components/home/CompanyCard';
-import IndustryCard from '@/components/home/IndustryCard';
-import JobCard from '@/components/home/JobCard';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import CompanyCard from "@/components/home/CompanyCard";
+import IndustryCard from "@/components/home/IndustryCard";
+import JobCard from "@/components/home/JobCard";
+import { useAppSelector } from "@/store/hooks";
+import { selectCurrentUser } from "@/store/slices/authSlice";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
-  const { data: industries, loading: indLoading } = useFetch<Industry[]>(API.industries);
-  const { data: jobs, loading: jobsLoading } = useFetch<Job[]>(API.jobs);
-  const { data: companies, loading: compLoading } = useFetch<Company[]>(API.companies);
+  const user = useAppSelector(selectCurrentUser);
+  const { data: industries, isLoading: indLoading } = useGetIndustriesQuery({});
+  const { data: jobs, isLoading: jobsLoading } = useGetJobsQuery({});
+  const { data: companies, isLoading: compLoading } = useGetCompaniesQuery({});
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,7 +36,10 @@ export default function HomeScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140 }}
       >
-        <Header actionLabel="Sign In" actionRoute="/sign-in" />
+        <Header
+          actionLabel={user ? `Hi, ${user.name.split(" ")[0]}` : "Sign In"}
+          actionRoute={user ? "/profile" : "/sign-in"}
+        />
 
         {/* Modern Search Row */}
         <View style={styles.searchSection}>
@@ -47,7 +60,9 @@ export default function HomeScreen() {
             <FlatList
               data={industries}
               keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item, index }) => <IndustryCard industry={item} index={index} />}
+              renderItem={({ item, index }) => (
+                <IndustryCard industry={item} index={index} />
+              )}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.horizontalList}
@@ -61,9 +76,11 @@ export default function HomeScreen() {
           {jobsLoading ? (
             <ActivityIndicator color={COLORS.primary} style={{ padding: 20 }} />
           ) : (
-            jobs?.slice(0, 5).map((job, index) => (
-              <JobCard key={job.id} job={job} index={index} />
-            ))
+            jobs
+              ?.slice(0, 5)
+              .map((job, index) => (
+                <JobCard key={job.id} job={job} index={index} />
+              ))
           )}
         </View>
 
@@ -86,11 +103,9 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
   },
   scroll: {
     flex: 1,
-
   },
   searchSection: {
     backgroundColor: COLORS.primary,
@@ -103,7 +118,7 @@ const styles = StyleSheet.create({
   },
   welcomeText: {
     fontSize: FontSizes.xxl,
-    fontWeight: '800',
+    fontWeight: "800",
     color: COLORS.white,
     marginBottom: 16,
     letterSpacing: -0.5,

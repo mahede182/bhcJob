@@ -23,14 +23,71 @@ import Input from "@/components/ui/Input";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { BlueTop } from "@/components/ui/BlueTop";
+import { useAppDispatch } from "@/store/hooks";
+import { setCredentials } from "@/store/slices/authSlice";
+import { useLoginMutation } from "@/store/api/authApi";
+import { storage } from "@/utils/storage";
+import Toast from "react-native-toast-message";
+
 export default function SignInScreen() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [login, { isLoading: loading }] = useLoginMutation();
 
-  const handleSignIn = () => {
-    // Temporary: just navigate to tabs
-    router.replace("/(tabs)");
+  const handleSignIn = async () => {
+    if (!phone || !password) {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Please enter phone and password",
+      });
+      return;
+    }
+
+    try {
+      const response = await login({ phone, password }).unwrap();
+
+      if (response.status && response.data) {
+        const { token, user } = response.data;
+
+        // Save to Secure Storage for persistence
+        if (token) await storage.saveToken(token);
+        if (user) await storage.saveUser(user);
+
+        // Update Redux state for immediate access
+        dispatch(setCredentials({ user, token }));
+
+        Toast.show({
+          type: "success",
+          text1: "Welcome back!",
+          text2: "Login successful",
+        });
+        router.replace("/(tabs)");
+      } else {
+        let errorMessage = response.message || "Invalid credentials";
+        if (response.error) {
+          const firstKey = Object.keys(response.error)[0];
+          if (firstKey && Array.isArray(response.error[firstKey])) {
+            errorMessage = response.error[firstKey][0];
+          }
+        }
+
+        Toast.show({
+          type: "error",
+          text1: "Login Failed",
+          text2: errorMessage,
+        });
+      }
+    } catch (error: any) {
+      Toast.show({
+        type: "error",
+        text1: "Network Error",
+        text2: error?.data?.message || "Something went wrong during login",
+      });
+    }
   };
 
   return (
@@ -38,10 +95,8 @@ export default function SignInScreen() {
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <Header actionLabel="Sign Up" actionRoute="/sign-up" />
 
-        {/* Blue accent top */}
-        <View style={styles.blueTop} />
+        <BlueTop />
 
-        {/* Login Card */}
         <View style={styles.cardWrapper}>
           <Animated.View
             entering={FadeInDown.duration(600)}
@@ -77,7 +132,7 @@ export default function SignInScreen() {
               <Text style={styles.forgotText}>Forgot Your Password?</Text>
             </TouchableOpacity>
 
-            <Button title="SIGN IN" onPress={handleSignIn} />
+            <Button title="SIGN IN" onPress={handleSignIn} loading={loading} />
 
             <Divider />
 
@@ -103,13 +158,6 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flex: 1,
-  },
-  blueTop: {
-    height: 100,
-    backgroundColor: COLORS.primary,
-    borderBottomLeftRadius: 30,
-    borderBottomRightRadius: 30,
-    ...Shadows.sm,
   },
   cardWrapper: {
     paddingHorizontal: Spacing.four,

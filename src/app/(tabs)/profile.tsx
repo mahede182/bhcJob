@@ -18,24 +18,40 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Toast from "react-native-toast-message";
 import MenuItem from "@/components/ui/MenuItem";
+import { BLOG } from "@/constants/api";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { logOut, selectCurrentUser } from "@/store/slices/authSlice";
+import { storage } from "@/utils/storage";
+import Toast from "react-native-toast-message";
 
 export default function ProfileScreen() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const user = useAppSelector(selectCurrentUser);
 
-  const handleSignOut = () => {
-    Toast.show({
-      type: "info",
-      text1: "Signed Out",
-      text2: "You have been signed out successfully.",
-    });
-    router.replace("/sign-in");
+  const handleSignOut = async () => {
+    try {
+      await storage.clearAll();
+      dispatch(logOut());
+      Toast.show({
+        type: "info",
+        text1: "Signed Out",
+        text2: "You have been signed out successfully.",
+      });
+      router.replace("/sign-in");
+    } catch {
+      Toast.show({
+        type: "error",
+        text1: "Error",
+        text2: "Something went wrong during sign out",
+      });
+    }
   };
 
   const handleOpenBlog = async () => {
     try {
-      const url = "https://bhcjobs.com/blog";
+      const url = BLOG;
       const supported = await Linking.canOpenURL(url);
       if (supported) {
         await Linking.openURL(url);
@@ -46,7 +62,7 @@ export default function ProfileScreen() {
           text2: "Unable to open blog link",
         });
       }
-    } catch (error) {}
+    } catch {}
   };
 
   return (
@@ -62,8 +78,10 @@ export default function ProfileScreen() {
               <Ionicons name="person" size={40} color={COLORS.primary} />
             </View>
             <View style={styles.nameSection}>
-              <Text style={styles.name}>John Doe</Text>
-              <Text style={styles.email}>john.doe@example.com</Text>
+              <Text style={styles.name}>{user?.name || "Guest User"}</Text>
+              <Text style={styles.email}>
+                {user?.email || user?.phone || "No email provided"}
+              </Text>
             </View>
             <TouchableOpacity style={styles.editButton}>
               <Ionicons

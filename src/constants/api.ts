@@ -10,6 +10,8 @@ export const API = {
   verifyOtp: `${API_BASE}/job_seeker/phone_verify`,
 } as const;
 
+export const BLOG = "https://bhcjobs.com/blog";
+
 export const getImageUrl = (
   folder: "industry-image" | "company-image",
   filename: string,

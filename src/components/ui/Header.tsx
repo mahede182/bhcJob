@@ -1,31 +1,68 @@
-import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-import { Image } from 'expo-image';
-import { useRouter } from 'expo-router';
-import React from 'react';
-import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import {
+  BorderRadius,
+  COLORS,
+  FontSizes,
+  Shadows,
+  Spacing,
+} from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
+import { useRouter } from "expo-router";
+import React from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 interface HeaderProps {
   actionLabel?: string;
-  actionRoute?: '/' | '/sign-in' | '/sign-up';
+  actionRoute?: string;
+  showBack?: boolean;
 }
 
-export default function Header({ actionLabel = 'Sign In', actionRoute = '/sign-in' }: HeaderProps) {
+export default function Header({
+  actionLabel,
+  actionRoute,
+  showBack,
+}: HeaderProps) {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => router.push('/')} style={styles.logoContainer}>
-        <Image
-          source={require('@/assets/logo.png')}
-          style={styles.logoImage}
-          contentFit="contain"
-        />
-      </TouchableOpacity>
+      <View style={styles.leftSection}>
+        {showBack ? (
+          <TouchableOpacity
+            onPress={() => router.back()}
+            style={styles.backButton}
+          >
+            <Ionicons name="arrow-back" size={24} color={COLORS.primary} />
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity
+            onPress={() => router.push("/")}
+            style={styles.logoContainer}
+          >
+            <Image
+              source={require("@/assets/logo.png")}
+              style={styles.logoImage}
+              contentFit="contain"
+            />
+          </TouchableOpacity>
+        )}
+      </View>
       <View style={styles.actions}>
         <TouchableOpacity style={styles.darkModeIcon}>
           <Ionicons name="moon-outline" size={18} color={COLORS.primary} />
         </TouchableOpacity>
+        {actionLabel && (
+          <TouchableOpacity
+            style={styles.actionButton}
+            onPress={() => actionRoute && router.push(actionRoute as any)}
+          >
+            <Ionicons
+              name="person-circle-outline"
+              size={20}
+              color={COLORS.white}
+            />
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
@@ -33,9 +70,9 @@ export default function Header({ actionLabel = 'Sign In', actionRoute = '/sign-i
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingHorizontal: Spacing.four,
     paddingVertical: 14,
     backgroundColor: COLORS.white,
@@ -45,13 +82,22 @@ const styles = StyleSheet.create({
     height: 32,
     width: 120,
   },
+  leftSection: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  backButton: {
+    padding: 4,
+    marginLeft: -4,
+  },
   logoImage: {
-    width: '100%',
-    height: '100%',
+    width: "100%",
+    height: "100%",
   },
   actions: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 12,
   },
   actionButton: {
@@ -62,7 +108,7 @@ const styles = StyleSheet.create({
   },
   actionText: {
     color: COLORS.white,
-    fontWeight: '700',
+    fontWeight: "700",
     fontSize: FontSizes.sm,
   },
   darkModeIcon: {
@@ -70,7 +116,7 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 18,
     backgroundColor: COLORS.gray100,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
