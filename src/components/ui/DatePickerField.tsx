@@ -1,0 +1,100 @@
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
+import { Ionicons } from '@expo/vector-icons';
+import { COLORS, FontSizes, BorderRadius } from '@/constants/theme';
+
+interface DatePickerFieldProps {
+  label: string;
+  value: Date | null;
+  onChange: (date: Date) => void;
+  required?: boolean;
+  placeholder?: string;
+}
+
+export default function DatePickerField({
+  label,
+  value,
+  onChange,
+  required,
+  placeholder = 'Select date',
+}: DatePickerFieldProps) {
+  const [show, setShow] = useState(false);
+
+  const handleChange = (_event: DateTimePickerEvent, selectedDate?: Date) => {
+    if (Platform.OS === 'android') {
+      setShow(false);
+    }
+    if (selectedDate) {
+      onChange(selectedDate);
+    }
+  };
+
+  const formatDate = (date: Date) => {
+    const y = date.getFullYear();
+    const m = String(date.getMonth() + 1).padStart(2, '0');
+    const d = String(date.getDate()).padStart(2, '0');
+    return `${y}-${m}-${d}`;
+  };
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.label}>
+        {label}
+        {required && <Text style={styles.required}> *</Text>}
+      </Text>
+      <TouchableOpacity style={styles.inputWrapper} onPress={() => setShow(true)}>
+        <Ionicons name="calendar-outline" size={18} color={COLORS.gray400} style={styles.icon} />
+        <Text style={[styles.text, !value && styles.placeholder]}>
+          {value ? formatDate(value) : placeholder}
+        </Text>
+      </TouchableOpacity>
+
+      {show && (
+        <DateTimePicker
+          value={value || new Date(2000, 0, 1)}
+          mode="date"
+          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          onChange={handleChange}
+          maximumDate={new Date()}
+        />
+      )}
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+  },
+  label: {
+    fontSize: FontSizes.sm,
+    fontWeight: '600',
+    color: COLORS.gray700,
+    marginBottom: 6,
+  },
+  required: {
+    color: COLORS.error,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: COLORS.inputBg,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    borderColor: COLORS.border,
+    paddingHorizontal: 14,
+    height: 48,
+  },
+  icon: {
+    marginRight: 10,
+  },
+  text: {
+    fontSize: FontSizes.md,
+    color: COLORS.gray900,
+    flex: 1,
+  },
+  placeholder: {
+    color: COLORS.gray400,
+  },
+});
