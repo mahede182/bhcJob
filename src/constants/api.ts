@@ -1,5 +1,5 @@
-export const API_BASE = 'https://dev.bhcjobs.com/api';
-export const STORAGE_BASE = 'https://dev.bhcjobs.com/storage';
+export const API_BASE = process.env.EXPO_PUBLIC_API_URL;
+export const STORAGE_BASE = process.env.EXPO_PUBLIC_API_STORAGE;
 
 export const API = {
   industries: `${API_BASE}/industry/get`,
@@ -10,5 +10,7 @@ export const API = {
   verifyOtp: `${API_BASE}/job_seeker/phone_verify`,
 } as const;
 
-export const getImageUrl = (folder: 'industry-image' | 'company-image', filename: string) =>
-  `${STORAGE_BASE}/${folder}/${filename}`;
+export const getImageUrl = (
+  folder: "industry-image" | "company-image",
+  filename: string,
+) => `${STORAGE_BASE}/${folder}/${filename}`;

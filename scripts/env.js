@@ -3,10 +3,10 @@
  */
 const files = process.argv.slice(2);
 
-// Check for any file that starts with .env (e.g., .env, .env.local, .env.production)
+// Check for the exact .env file only
 const envFiles = files.filter((file) => {
   const fileName = file.split("/").pop();
-  return fileName.startsWith(".env");
+  return fileName === ".env";
 });
 
 if (envFiles.length > 0) {
@@ -18,7 +18,7 @@ if (envFiles.length > 0) {
     "\x1b[31m%s\x1b[0m",
     "---------------------------------------------------",
   );
-  console.error("The following files represent a security risk if committed:");
+  console.error("The .env file represents a security risk if committed:");
   envFiles.forEach((file) => console.error(`  - ${file}`));
   console.error(
     "\x1b[31m%s\x1b[0m",
