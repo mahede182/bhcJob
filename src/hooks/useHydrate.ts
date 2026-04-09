@@ -9,6 +9,11 @@ import {
 import { setFirstLaunch } from "@/store/slices/appSlice";
 import { storage } from "@/utils/storage";
 import { APP_INITIALIZED } from "@/constants/config";
+import {
+  hydrateTheme,
+  THEME_STORAGE_KEY,
+  type ThemeMode,
+} from "@/store/slices/themeSlice";
 
 export const useHydrate = () => {
   const dispatch = useAppDispatch();
@@ -27,6 +32,14 @@ export const useHydrate = () => {
           dispatch(setCredentials({ user: user || {}, token }));
         } else {
           dispatch(clearCredentials());
+        }
+
+        // 3. Hydrate Theme
+        const savedTheme = (await AsyncStorage.getItem(
+          THEME_STORAGE_KEY,
+        )) as ThemeMode | null;
+        if (savedTheme) {
+          dispatch(hydrateTheme(savedTheme));
         }
       } catch (error) {
         console.error("Hydration failed", error);

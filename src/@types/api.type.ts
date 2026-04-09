@@ -34,6 +34,13 @@ export interface JobCompany {
   country: { id: number; name: string };
 }
 
+type FoodOption = "provided" | "allowance" | null;
+
+export interface JobCity {
+  id: number;
+  name: string;
+}
+
 export interface Job {
   id: number;
   job_title: string;
@@ -43,6 +50,7 @@ export interface Job {
   min_salary: number;
   max_salary: number | null;
   currency: string;
+  salary_type: string;
   employment_type: string;
   type: string;
   vacancy: number;
@@ -51,7 +59,19 @@ export interface Job {
   is_trending: number;
   is_hot: number;
   view_count: number;
+  expiry: string | null;
+  food_option: FoodOption;
+  food_amount: number | null;
+  accommodation: number;
+  transportation: number;
+  iqama: number;
+  medical_service: number;
+  working_days: number | null;
+  working_hours: number | null;
+  is_overtime_allowed: number;
+  priority: number;
   company: JobCompany;
   category: { id: number; name: string };
   country: { id: number; name: string };
+  city: JobCity | null;
 }

@@ -17,12 +17,14 @@ import {
 } from "react-native";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useTheme } from "@/hooks/useTheme";
 
 const { width } = Dimensions.get("window");
 
 export default function OnboardingScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const { colors } = useTheme();
 
   const handleFinishOnboarding = async (
     targetRoute: "/sign-in" | "/sign-up",
@@ -36,7 +38,9 @@ export default function OnboardingScreen() {
   const handleCreateAccount = () => handleFinishOnboarding("/sign-up");
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <View style={styles.content}>
         <Animated.View
           entering={FadeInUp.delay(200).duration(800)}
@@ -50,14 +54,14 @@ export default function OnboardingScreen() {
         </Animated.View>
         <Animated.Text
           entering={FadeInDown.delay(600).duration(800)}
-          style={styles.title}
+          style={[styles.title, { color: colors.text }]}
         >
           Welcome to BHC Jobs
         </Animated.Text>
 
         <Animated.Text
           entering={FadeInDown.delay(800).duration(800)}
-          style={styles.description}
+          style={[styles.description, { color: colors.textSecondary }]}
         >
           Build your profile, explore and apply to your favourite jobs and get
           contracted by employers immediately.
@@ -77,8 +81,13 @@ export default function OnboardingScreen() {
             style={styles.secondaryButton}
             onPress={handleCreateAccount}
           >
-            <Text style={styles.secondaryButtonText}>
-              New here? <Text style={styles.linkText}>Create Account</Text>
+            <Text
+              style={[styles.secondaryButtonText, { color: colors.textMuted }]}
+            >
+              New here?{" "}
+              <Text style={[styles.linkText, { color: colors.primary }]}>
+                Create Account
+              </Text>
             </Text>
           </TouchableOpacity>
         </Animated.View>
@@ -92,15 +101,6 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: Spacing.five,
   },
-  graphicContainer: {
-    flex: 1.2,
-    backgroundColor: COLORS.primary,
-    borderBottomLeftRadius: 60,
-    borderBottomRightRadius: 60,
-    alignItems: "center",
-    justifyContent: "center",
-    overflow: "hidden",
-  },
   logoWrapper: {
     width: 200,
     height: 60,
@@ -110,37 +110,6 @@ const styles = StyleSheet.create({
   logo: {
     width: "100%",
     height: "100%",
-  },
-  illustrationWrapper: {
-    width: width * 0.8,
-    height: width * 0.5,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  circle1: {
-    width: 220,
-    height: 220,
-    borderRadius: 110,
-    backgroundColor: "rgba(255, 255, 255, 0.08)",
-    position: "absolute",
-    top: -20,
-    left: -10,
-  },
-  circle2: {
-    width: 140,
-    height: 140,
-    borderRadius: 70,
-    backgroundColor: "rgba(255, 255, 255, 0.06)",
-    position: "absolute",
-    bottom: 0,
-    right: 10,
-  },
-  square: {
-    width: 120,
-    height: 120,
-    borderRadius: 28,
-    backgroundColor: "rgba(255, 255, 255, 0.05)",
-    transform: [{ rotate: "45deg" }],
   },
   content: {
     flex: 1,

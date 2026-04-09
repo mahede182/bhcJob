@@ -10,9 +10,10 @@ import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
 import { Ionicons } from "@expo/vector-icons";
-import { COLORS, FontSizes, BorderRadius } from "@/constants/theme";
+import { FontSizes, BorderRadius } from "@/constants/theme";
 
 import { type DatePickerFieldProps } from "@/@types/ui.type";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function DatePickerField({
   label,
@@ -22,6 +23,9 @@ export default function DatePickerField({
   placeholder = "Select date",
 }: DatePickerFieldProps) {
   const [show, setShow] = useState(false);
+  const { colors, isDark } = useTheme();
+
+  const styles = createStyles(colors);
 
   const handleChange = (_event: DateTimePickerEvent, selectedDate?: Date) => {
     if (Platform.OS === "android") {
@@ -52,7 +56,7 @@ export default function DatePickerField({
         <Ionicons
           name="calendar-outline"
           size={18}
-          color={COLORS.gray400}
+          color={colors.icon}
           style={styles.icon}
         />
         <Text style={[styles.text, !value && styles.placeholder]}>
@@ -67,44 +71,46 @@ export default function DatePickerField({
           display={Platform.OS === "ios" ? "spinner" : "default"}
           onChange={handleChange}
           maximumDate={new Date()}
+          themeVariant={isDark ? "dark" : "light"}
         />
       )}
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    marginBottom: 16,
-  },
-  label: {
-    fontSize: FontSizes.sm,
-    fontWeight: "600",
-    color: COLORS.gray700,
-    marginBottom: 6,
-  },
-  required: {
-    color: COLORS.error,
-  },
-  inputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: COLORS.inputBg,
-    borderRadius: BorderRadius.md,
-    borderWidth: 1,
-    borderColor: COLORS.border,
-    paddingHorizontal: 14,
-    height: 48,
-  },
-  icon: {
-    marginRight: 10,
-  },
-  text: {
-    fontSize: FontSizes.md,
-    color: COLORS.gray900,
-    flex: 1,
-  },
-  placeholder: {
-    color: COLORS.gray400,
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      marginBottom: 16,
+    },
+    label: {
+      fontSize: FontSizes.sm,
+      fontWeight: "600",
+      color: colors.textSecondary,
+      marginBottom: 6,
+    },
+    required: {
+      color: colors.error,
+    },
+    inputWrapper: {
+      flexDirection: "row",
+      alignItems: "center",
+      backgroundColor: colors.inputBg,
+      borderRadius: BorderRadius.md,
+      borderWidth: 1,
+      borderColor: colors.border,
+      paddingHorizontal: 14,
+      height: 48,
+    },
+    icon: {
+      marginRight: 10,
+    },
+    text: {
+      fontSize: FontSizes.md,
+      color: colors.text,
+      flex: 1,
+    },
+    placeholder: {
+      color: colors.icon,
+    },
+  });

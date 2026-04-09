@@ -1,11 +1,6 @@
 import { BorderRadius, COLORS, FontSizes, Shadows } from "@/constants/theme";
 import React from "react";
-import {
-  ActivityIndicator,
-  StyleSheet,
-  Text,
-  type ViewStyle,
-} from "react-native";
+import { ActivityIndicator, StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedStyle,

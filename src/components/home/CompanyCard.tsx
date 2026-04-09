@@ -14,12 +14,29 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInLeft } from "react-native-reanimated";
 
 import { type CompanyCardProps } from "@/@types/jobs.type";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function CompanyCard({ company, index }: CompanyCardProps) {
+  const { colors } = useTheme();
+
   return (
     <Animated.View entering={FadeInLeft.delay(index * 100).duration(500)}>
-      <TouchableOpacity style={styles.container} activeOpacity={0.7}>
-        <View style={styles.logoWrapper}>
+      <TouchableOpacity
+        style={[
+          styles.container,
+          { backgroundColor: colors.surface, borderColor: colors.border },
+        ]}
+        activeOpacity={0.7}
+      >
+        <View
+          style={[
+            styles.logoWrapper,
+            {
+              backgroundColor: colors.surfaceSelected,
+              borderColor: colors.border,
+            },
+          ]}
+        >
           <Image
             source={getImageUrl("company-image", company.image)}
             style={styles.logoImage}
@@ -27,19 +44,24 @@ export default function CompanyCard({ company, index }: CompanyCardProps) {
           />
         </View>
         <View style={styles.info}>
-          <Text style={styles.name} numberOfLines={1}>
+          <Text style={[styles.name, { color: colors.text }]} numberOfLines={1}>
             {company.name}
           </Text>
           <View style={styles.badgeRow}>
-            <View style={styles.badge}>
-              <Text style={styles.badgeText}>
+            <View
+              style={[
+                styles.badge,
+                { backgroundColor: colors.surfaceSelected },
+              ]}
+            >
+              <Text style={[styles.badgeText, { color: colors.textSecondary }]}>
                 {company.jobs_count} Positions
               </Text>
             </View>
           </View>
         </View>
         <View style={styles.chevron}>
-          <Ionicons name="chevron-forward" size={18} color={COLORS.gray400} />
+          <Ionicons name="chevron-forward" size={18} color={colors.icon} />
         </View>
       </TouchableOpacity>
     </Animated.View>
@@ -57,15 +79,15 @@ const styles = StyleSheet.create({
     marginBottom: 12,
     ...Shadows.sm,
     borderWidth: 1,
-    borderColor: COLORS.gray100,
+    borderColor: COLORS.gray200,
   },
   logoWrapper: {
     width: 44,
     height: 44,
     borderRadius: BorderRadius.md,
-    backgroundColor: COLORS.gray50,
+    backgroundColor: COLORS.gray100,
     borderWidth: 1,
-    borderColor: COLORS.gray100,
+    borderColor: COLORS.gray200,
     alignItems: "center",
     justifyContent: "center",
     overflow: "hidden",

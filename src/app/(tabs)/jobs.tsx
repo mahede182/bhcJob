@@ -1,6 +1,7 @@
 import JobCard from "@/components/home/JobCard";
 import Header from "@/components/ui/Header";
 import { COLORS, FontSizes, Shadows, Spacing } from "@/constants/theme";
+import { useTheme } from "@/hooks/useTheme";
 import { useGetJobsQuery } from "@/store/api/jobsApi";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
@@ -16,16 +17,20 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function JobsScreen() {
   const { data: jobs, isLoading: loading } = useGetJobsQuery({});
-
+  const { colors } = useTheme();
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <Header showBack />
 
       <View style={styles.content}>
         <View style={styles.titleSection}>
           <View style={styles.titleRow}>
             <View>
-              <Text style={styles.title}>All Jobs</Text>
+              <Text style={[styles.title, { color: colors.text }]}>
+                All Jobs
+              </Text>
               <Text style={styles.subtitle}>
                 {jobs?.length || 0} positions available
               </Text>
@@ -61,7 +66,6 @@ export default function JobsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F8F9FA",
   },
   content: {
     flex: 1,

@@ -5,6 +5,9 @@ import { Provider } from "react-redux";
 import { store } from "@/store/store";
 import { useHydrate } from "@/hooks/useHydrate";
 import { useAppSelector } from "@/store/hooks";
+import { ThemeProvider } from "@react-navigation/native";
+import { StatusBar } from "expo-status-bar";
+import { useTheme } from "@/hooks/useTheme";
 import { useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 
@@ -17,6 +20,7 @@ function RootLayoutContent() {
   const router = useRouter();
 
   useHydrate();
+  const { navTheme, isDark } = useTheme();
 
   useEffect(() => {
     if (!isLoading) {
@@ -57,14 +61,17 @@ function RootLayoutContent() {
   }
 
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen name="onboarding" />
-      <Stack.Screen name="(tabs)" />
-      <Stack.Screen name="sign-in" />
-      <Stack.Screen name="sign-up" />
-      <Stack.Screen name="verify-otp" />
-    </Stack>
+    <ThemeProvider value={navTheme}>
+      <StatusBar style={isDark ? "light" : "dark"} />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="onboarding" />
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="sign-in" />
+        <Stack.Screen name="sign-up" />
+        <Stack.Screen name="verify-otp" />
+      </Stack>
+    </ThemeProvider>
   );
 }
 

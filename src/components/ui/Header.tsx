@@ -12,6 +12,10 @@ import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
 import { type HeaderProps } from "@/@types/ui.type";
+import { useTheme } from "@/hooks/useTheme";
+import { useAppDispatch } from "@/store/hooks";
+import { THEME_STORAGE_KEY, setTheme } from "@/store/slices/themeSlice";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Header({
   actionLabel,
@@ -19,6 +23,14 @@ export default function Header({
   showBack,
 }: HeaderProps) {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { colors, isDark } = useTheme();
+
+  const toggleTheme = () => {
+    const nextTheme = isDark ? "light" : "dark";
+    dispatch(setTheme(nextTheme));
+    AsyncStorage.setItem(THEME_STORAGE_KEY, nextTheme);
+  };
 
   return (
     <View style={styles.container}>
@@ -28,7 +40,7 @@ export default function Header({
             onPress={() => router.back()}
             style={styles.backButton}
           >
-            <Ionicons name="arrow-back" size={24} color={COLORS.primary} />
+            <Ionicons name="arrow-back" size={24} color={colors.primary} />
           </TouchableOpacity>
         ) : (
           <TouchableOpacity
@@ -44,12 +56,16 @@ export default function Header({
         )}
       </View>
       <View style={styles.actions}>
-        <TouchableOpacity style={styles.darkModeIcon}>
-          <Ionicons name="moon-outline" size={18} color={COLORS.primary} />
+        <TouchableOpacity style={styles.darkModeIcon} onPress={toggleTheme}>
+          <Ionicons
+            name={isDark ? "sunny-outline" : "moon-outline"}
+            size={18}
+            color={colors.primary}
+          />
         </TouchableOpacity>
         {actionLabel && (
           <TouchableOpacity
-            style={styles.actionButton}
+            style={[styles.actionButton, { backgroundColor: colors.primary }]}
             onPress={() => actionRoute && router.push(actionRoute as any)}
           >
             <Ionicons

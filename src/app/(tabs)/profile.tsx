@@ -20,6 +20,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import MenuItem from "@/components/ui/MenuItem";
 import { BLOG } from "@/constants/api";
+import { PROFILE_STATS } from "@/constants/data";
+import ProfileStats from "@/components/profile/ProfileStats";
+import { useTheme } from "@/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logOut, selectCurrentUser } from "@/store/slices/authSlice";
 import { storage } from "@/utils/storage";
@@ -29,6 +32,7 @@ export default function ProfileScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
+  const { colors } = useTheme();
 
   const handleSignOut = async () => {
     try {
@@ -70,15 +74,25 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
       >
         {/* Profile Header */}
-        <View style={styles.header}>
+        <View style={[styles.header, { backgroundColor: colors.primary }]}>
           <View style={styles.profileInfo}>
-            <View style={styles.avatarWrapper}>
+            <View
+              style={[
+                styles.avatarWrapper,
+                {
+                  backgroundColor: COLORS.primaryLight,
+                  borderColor: COLORS.white,
+                },
+              ]}
+            >
               <Ionicons name="person" size={40} color={COLORS.primary} />
             </View>
             <View style={styles.nameSection}>
@@ -88,7 +102,7 @@ export default function ProfileScreen() {
               </Text>
             </View>
             <TouchableOpacity
-              style={styles.editButton}
+              style={[styles.editButton, { backgroundColor: COLORS.gray100 }]}
               onPress={handleEditProfile}
             >
               <Ionicons
@@ -101,20 +115,7 @@ export default function ProfileScreen() {
         </View>
 
         {/* Stats Section */}
-        <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>12</Text>
-            <Text style={styles.statLabel}>Applied</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>5</Text>
-            <Text style={styles.statLabel}>Interviews</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>3</Text>
-            <Text style={styles.statLabel}>Offers</Text>
-          </View>
-        </View>
+        <ProfileStats stats={PROFILE_STATS} />
 
         {/* Menu Section */}
         <View style={styles.menuContainer}>
@@ -195,32 +196,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.gray100,
     alignItems: "center",
     justifyContent: "center",
-  },
-  statsRow: {
-    flexDirection: "row",
-    paddingHorizontal: Spacing.four,
-    gap: 16,
-    marginTop: -20,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    padding: 16,
-    borderRadius: BorderRadius.lg,
-    alignItems: "center",
-    ...Shadows.md,
-  },
-  statValue: {
-    fontSize: FontSizes.xl,
-    fontWeight: "800",
-    color: COLORS.primary,
-  },
-  statLabel: {
-    fontSize: 10,
-    fontWeight: "700",
-    color: COLORS.gray500,
-    marginTop: 4,
-    textTransform: "uppercase",
   },
   menuContainer: {
     marginTop: Spacing.five,

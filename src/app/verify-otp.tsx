@@ -22,6 +22,7 @@ import { storage } from "@/utils/storage";
 import Toast from "react-native-toast-message";
 
 import { type VerifyOtpParams } from "@/@types/auth.type";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function VerifyOtpScreen() {
   const router = useRouter();
@@ -30,6 +31,7 @@ export default function VerifyOtpScreen() {
   const [verifyOtp, { isLoading: loading }] = useVerifyOtpMutation();
   const { phone } = useLocalSearchParams<VerifyOtpParams>();
   const [otp, setOtp] = useState("");
+  const { colors } = useTheme();
 
   const handleVerify = async () => {
     if (otp.length < 4) {
@@ -47,11 +49,9 @@ export default function VerifyOtpScreen() {
       if (response.status && response.data) {
         const { token, user } = response.data;
 
-        // Save to Secure Storage for persistence
         if (token) await storage.saveToken(token);
         if (user) await storage.saveUser(user);
 
-        // Update Redux state
         dispatch(setCredentials({ user, token }));
 
         Toast.show({
@@ -59,10 +59,8 @@ export default function VerifyOtpScreen() {
           text1: "Verified",
           text2: "Phone verified successfully!",
         });
-        // Success: Navigate to Tabs
         setTimeout(() => router.replace("/(tabs)"), 800);
       } else {
-        // Handle application-level error (status: false)
         let errorMessage = response.message || "Invalid OTP code";
 
         if (response.error) {
@@ -101,17 +99,39 @@ export default function VerifyOtpScreen() {
               onPress={() => inputRef.current?.focus()}
               style={[
                 styles.otpBox,
-                hasValue && styles.otpBoxFilled,
-                isFocused && styles.otpBoxFocused,
+                { backgroundColor: colors.inputBg },
+                hasValue && [
+                  styles.otpBoxFilled,
+                  {
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
+                  },
+                ],
+                isFocused && [
+                  styles.otpBoxFocused,
+                  {
+                    borderColor: colors.primary,
+                    backgroundColor: colors.surface,
+                  },
+                ],
               ]}
             >
-              <Text style={[styles.otpText, hasValue && styles.otpTextFilled]}>
+              <Text
+                style={[
+                  styles.otpText,
+                  { color: colors.textMuted },
+                  hasValue && [styles.otpTextFilled, { color: colors.primary }],
+                ]}
+              >
                 {otp[index] || ""}
               </Text>
               {isFocused && (
                 <Animated.View
                   entering={FadeInDown}
-                  style={styles.focusIndicator}
+                  style={[
+                    styles.focusIndicator,
+                    { backgroundColor: colors.primary },
+                  ]}
                 />
               )}
             </TouchableOpacity>
@@ -122,7 +142,9 @@ export default function VerifyOtpScreen() {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ flexGrow: 1 }}
@@ -134,29 +156,42 @@ export default function VerifyOtpScreen() {
             entering={FadeInUp.delay(200).duration(800)}
             style={styles.illustrationWrap}
           >
-            <View style={styles.iconCircle}>
+            <View
+              style={[styles.iconCircle, { backgroundColor: colors.primary }]}
+            >
               <Ionicons
                 name="shield-checkmark"
                 size={40}
                 color={COLORS.white}
               />
             </View>
-            <View style={styles.pulseBox} />
+            <View
+              style={[
+                styles.pulseBox,
+                { backgroundColor: colors.primaryLight },
+              ]}
+            />
           </Animated.View>
 
           <View style={styles.headerTextWrap}>
-            <Text style={styles.title}>Verification Code</Text>
-            <Text style={styles.subtitle}>
+            <Text style={[styles.title, { color: colors.text }]}>
+              Verification Code
+            </Text>
+            <Text style={[styles.subtitle, { color: colors.textSecondary }]}>
               We have sent the OTP verification code to{"\n"}
-              <Text style={styles.phoneText}>{phone}</Text>
+              <Text style={[styles.phoneText, { color: colors.primary }]}>
+                {phone}
+              </Text>
             </Text>
           </View>
 
           <Animated.View
             entering={FadeInDown.delay(400).duration(800)}
-            style={styles.card}
+            style={[styles.card, { backgroundColor: colors.background }]}
           >
-            <Text style={styles.inputLabel}>Enter OTP</Text>
+            <Text style={[styles.inputLabel, { color: colors.textSecondary }]}>
+              Enter OTP
+            </Text>
 
             {renderOtpBoxes()}
 
@@ -178,9 +213,15 @@ export default function VerifyOtpScreen() {
             />
 
             <View style={styles.footer}>
-              <Text style={styles.resendText}>Didn&apos;t receive code?</Text>
+              <Text
+                style={[styles.resendText, { color: colors.textSecondary }]}
+              >
+                Didn&apos;t receive code?
+              </Text>
               <TouchableOpacity disabled={loading}>
-                <Text style={styles.resendBold}>Resend</Text>
+                <Text style={[styles.resendBold, { color: colors.primary }]}>
+                  Resend
+                </Text>
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -191,7 +232,7 @@ export default function VerifyOtpScreen() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: COLORS.white },
+  container: { flex: 1, backgroundColor: "#F8F9FA" },
   content: {
     flex: 1,
     paddingHorizontal: 24,
@@ -234,7 +275,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: FontSizes.md,
-    color: COLORS.gray500,
+    color: COLORS.gray600,
     textAlign: "center",
     lineHeight: 22,
   },
@@ -244,13 +285,13 @@ const styles = StyleSheet.create({
   },
   card: {
     width: "100%",
-    backgroundColor: COLORS.white,
+    backgroundColor: "#F8F9FA",
     paddingVertical: 10,
   },
   inputLabel: {
     fontSize: FontSizes.sm,
     fontWeight: "700",
-    color: COLORS.gray400,
+    color: COLORS.gray600,
     textTransform: "uppercase",
     letterSpacing: 1,
     marginBottom: 20,
@@ -266,7 +307,7 @@ const styles = StyleSheet.create({
     width: 65,
     height: 70,
     borderRadius: BorderRadius.lg,
-    backgroundColor: "#F4F7FF",
+    backgroundColor: COLORS.gray100,
     borderWidth: 1.5,
     borderColor: "transparent",
     alignItems: "center",
@@ -280,12 +321,12 @@ const styles = StyleSheet.create({
   },
   otpBoxFilled: {
     backgroundColor: COLORS.white,
-    borderColor: "#E0E7FF",
+    borderColor: COLORS.gray200,
   },
   otpText: {
     fontSize: 26,
     fontWeight: "800",
-    color: COLORS.gray300,
+    color: COLORS.gray400,
   },
   otpTextFilled: {
     color: COLORS.primary,
@@ -318,7 +359,7 @@ const styles = StyleSheet.create({
   },
   resendText: {
     fontSize: FontSizes.md,
-    color: COLORS.gray500,
+    color: COLORS.gray600,
   },
   resendBold: {
     fontSize: FontSizes.md,
