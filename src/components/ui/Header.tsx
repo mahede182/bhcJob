@@ -11,11 +11,7 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 
-interface HeaderProps {
-  actionLabel?: string;
-  actionRoute?: string;
-  showBack?: boolean;
-}
+import { type HeaderProps } from "@/@types/ui.type";
 
 export default function Header({
   actionLabel,

@@ -65,11 +65,15 @@ export default function ProfileScreen() {
     } catch {}
   };
 
+  const handleEditProfile = () => {
+    // Navigate to edit profile
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.scrollContent}
       >
         {/* Profile Header */}
         <View style={styles.header}>
@@ -83,7 +87,10 @@ export default function ProfileScreen() {
                 {user?.email || user?.phone || "No email provided"}
               </Text>
             </View>
-            <TouchableOpacity style={styles.editButton}>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={handleEditProfile}
+            >
               <Ionicons
                 name="create-outline"
                 size={20}
@@ -137,6 +144,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F8F9FA",
+  },
+  scrollContent: {
+    paddingBottom: 100,
   },
   header: {
     paddingTop: 60,

@@ -1,15 +1,12 @@
-import type { Industry } from '@/@types/api';
-import { getImageUrl } from '@/constants/api';
-import { BorderRadius, COLORS, FontSizes, Shadows } from '@/constants/theme';
-import { Image } from 'expo-image';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { FadeInRight } from 'react-native-reanimated';
+import type { Industry } from "@/@types/api.type";
+import { getImageUrl } from "@/constants/api";
+import { BorderRadius, COLORS, FontSizes, Shadows } from "@/constants/theme";
+import { Image } from "expo-image";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { FadeInRight } from "react-native-reanimated";
 
-interface IndustryCardProps {
-  industry: Industry;
-  index: number;
-}
+import { type IndustryCardProps } from "@/@types/jobs.type";
 
 export default function IndustryCard({ industry, index }: IndustryCardProps) {
   return (
@@ -17,13 +14,15 @@ export default function IndustryCard({ industry, index }: IndustryCardProps) {
       <TouchableOpacity style={styles.container} activeOpacity={0.8}>
         <View style={styles.imageWrapper}>
           <Image
-            source={getImageUrl('industry-image', industry.image)}
+            source={getImageUrl("industry-image", industry.image)}
             style={styles.image}
             contentFit="cover"
           />
         </View>
         <View style={styles.content}>
-          <Text style={styles.name} numberOfLines={1}>{industry.name}</Text>
+          <Text style={styles.name} numberOfLines={1}>
+            {industry.name}
+          </Text>
           <Text style={styles.count}>{industry.jobs_count} Jobs</Text>
         </View>
       </TouchableOpacity>
@@ -43,30 +42,30 @@ const styles = StyleSheet.create({
     borderColor: COLORS.gray100,
   },
   imageWrapper: {
-    width: '100%',
+    width: "100%",
     height: 80,
     borderRadius: BorderRadius.md,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginBottom: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   image: {
-    width: '60%',
-    height: '60%',
+    width: "60%",
+    height: "60%",
   },
   content: {
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
   },
   name: {
     fontSize: FontSizes.sm,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.gray900,
     marginBottom: 2,
   },
   count: {
     fontSize: 10,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.primary,
     backgroundColor: COLORS.primaryLight,
     paddingHorizontal: 6,

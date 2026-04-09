@@ -1,5 +1,5 @@
-import type { ApiResponse } from '@/@types/api';
-import { useEffect, useState } from 'react';
+import type { ApiResponse } from "@/@types/api.type";
+import { useEffect, useState } from "react";
 
 interface UseFetchResult<T> {
   data: T | null;
@@ -25,12 +25,12 @@ export function useFetch<T>(url: string): UseFetchResult<T> {
           if (json.status) {
             setData(json.data);
           } else {
-            setError(json.message || 'Something went wrong');
+            setError(json.message || "Something went wrong");
           }
         }
       } catch (err) {
         if (!cancelled) {
-          setError(err instanceof Error ? err.message : 'Network error');
+          setError(err instanceof Error ? err.message : "Network error");
         }
       } finally {
         if (!cancelled) setLoading(false);
@@ -38,7 +38,9 @@ export function useFetch<T>(url: string): UseFetchResult<T> {
     };
 
     fetchData();
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, [url]);
 
   return { data, loading, error };

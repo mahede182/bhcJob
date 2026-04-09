@@ -29,15 +29,35 @@ export default function HomeScreen() {
   const { data: jobs, isLoading: jobsLoading } = useGetJobsQuery({});
   const { data: companies, isLoading: compLoading } = useGetCompaniesQuery({});
 
+  const renderIndustryItem = ({
+    item,
+    index,
+  }: {
+    item: any;
+    index: number;
+  }) => <IndustryCard industry={item} index={index} />;
+
+  const renderJobItem = (job: any, index: number) => (
+    <JobCard key={job.id} job={job} index={index} />
+  );
+
+  const renderCompanyItem = (company: any, index: number) => (
+    <CompanyCard key={company.id} company={company} index={index} />
+  );
+
+  const industryKeyExtractor = (item: any) => item.id.toString();
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
         style={styles.scroll}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 140 }}
+        contentContainerStyle={styles.scrollContent}
       >
         <Header
-          actionLabel={user ? `Hi, ${user.name.split(" ")[0]}` : "Sign In"}
+          actionLabel={
+            user ? `Hi, ${(user.name || "User").split(" ")[0]}` : "Sign In"
+          }
           actionRoute={user ? "/profile" : "/sign-in"}
         />
 
@@ -55,14 +75,12 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <SectionHeader title="Popular Category" />
           {indLoading ? (
-            <ActivityIndicator color={COLORS.primary} style={{ padding: 20 }} />
+            <ActivityIndicator color={COLORS.primary} style={styles.loader} />
           ) : (
             <FlatList
               data={industries}
-              keyExtractor={(item) => item.id.toString()}
-              renderItem={({ item, index }) => (
-                <IndustryCard industry={item} index={index} />
-              )}
+              keyExtractor={industryKeyExtractor}
+              renderItem={renderIndustryItem}
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.horizontalList}
@@ -74,13 +92,9 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <SectionHeader title="Recommended Jobs" />
           {jobsLoading ? (
-            <ActivityIndicator color={COLORS.primary} style={{ padding: 20 }} />
+            <ActivityIndicator color={COLORS.primary} style={styles.loader} />
           ) : (
-            jobs
-              ?.slice(0, 5)
-              .map((job, index) => (
-                <JobCard key={job.id} job={job} index={index} />
-              ))
+            jobs?.slice(0, 5).map(renderJobItem)
           )}
         </View>
 
@@ -88,11 +102,9 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <SectionHeader title="Top Companies" />
           {compLoading ? (
-            <ActivityIndicator color={COLORS.primary} style={{ padding: 20 }} />
+            <ActivityIndicator color={COLORS.primary} style={styles.loader} />
           ) : (
-            companies?.map((company, index) => (
-              <CompanyCard key={company.id} company={company} index={index} />
-            ))
+            companies?.map(renderCompanyItem)
           )}
         </View>
       </ScrollView>
@@ -106,6 +118,12 @@ const styles = StyleSheet.create({
   },
   scroll: {
     flex: 1,
+  },
+  scrollContent: {
+    paddingBottom: 140,
+  },
+  loader: {
+    padding: 20,
   },
   searchSection: {
     backgroundColor: COLORS.primary,

@@ -24,9 +24,9 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { BlueTop } from "@/components/ui/BlueTop";
+import { useLoginMutation } from "@/store/api/authApi";
 import { useAppDispatch } from "@/store/hooks";
 import { setCredentials } from "@/store/slices/authSlice";
-import { useLoginMutation } from "@/store/api/authApi";
 import { storage } from "@/utils/storage";
 import Toast from "react-native-toast-message";
 
@@ -53,11 +53,9 @@ export default function SignInScreen() {
       if (response.status && response.data) {
         const { token, user } = response.data;
 
-        // Save to Secure Storage for persistence
         if (token) await storage.saveToken(token);
         if (user) await storage.saveUser(user);
 
-        // Update Redux state for immediate access
         dispatch(setCredentials({ user, token }));
 
         Toast.show({
@@ -88,6 +86,11 @@ export default function SignInScreen() {
         text2: error?.data?.message || "Something went wrong during login",
       });
     }
+  };
+
+  const handleGoToSignUp = () => router.push("/sign-up");
+  const handleForgotPassword = () => {
+    // Navigate to forgot password screen
   };
 
   return (
@@ -128,7 +131,10 @@ export default function SignInScreen() {
               onChangeText={setPassword}
             />
 
-            <TouchableOpacity style={styles.forgotRow}>
+            <TouchableOpacity
+              style={styles.forgotRow}
+              onPress={handleForgotPassword}
+            >
               <Text style={styles.forgotText}>Forgot Your Password?</Text>
             </TouchableOpacity>
 
@@ -140,7 +146,7 @@ export default function SignInScreen() {
               <Text style={styles.switchText}>
                 Don&apos;t have an account?{" "}
               </Text>
-              <TouchableOpacity onPress={() => router.push("/sign-up")}>
+              <TouchableOpacity onPress={handleGoToSignUp}>
                 <Text style={styles.switchLink}>Sign Up</Text>
               </TouchableOpacity>
             </View>

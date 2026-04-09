@@ -1,16 +1,19 @@
-import type { Company } from '@/@types/api';
-import { getImageUrl } from '@/constants/api';
-import { BorderRadius, COLORS, FontSizes, Shadows, Spacing } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-import { Image } from 'expo-image';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import Animated, { FadeInLeft } from 'react-native-reanimated';
+import type { Company } from "@/@types/api.type";
+import { getImageUrl } from "@/constants/api";
+import {
+  BorderRadius,
+  COLORS,
+  FontSizes,
+  Shadows,
+  Spacing,
+} from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { Image } from "expo-image";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { FadeInLeft } from "react-native-reanimated";
 
-interface CompanyCardProps {
-  company: Company;
-  index: number;
-}
+import { type CompanyCardProps } from "@/@types/jobs.type";
 
 export default function CompanyCard({ company, index }: CompanyCardProps) {
   return (
@@ -18,16 +21,20 @@ export default function CompanyCard({ company, index }: CompanyCardProps) {
       <TouchableOpacity style={styles.container} activeOpacity={0.7}>
         <View style={styles.logoWrapper}>
           <Image
-            source={getImageUrl('company-image', company.image)}
+            source={getImageUrl("company-image", company.image)}
             style={styles.logoImage}
             contentFit="contain"
           />
         </View>
         <View style={styles.info}>
-          <Text style={styles.name} numberOfLines={1}>{company.name}</Text>
+          <Text style={styles.name} numberOfLines={1}>
+            {company.name}
+          </Text>
           <View style={styles.badgeRow}>
             <View style={styles.badge}>
-              <Text style={styles.badgeText}>{company.jobs_count} Positions</Text>
+              <Text style={styles.badgeText}>
+                {company.jobs_count} Positions
+              </Text>
             </View>
           </View>
         </View>
@@ -41,8 +48,8 @@ export default function CompanyCard({ company, index }: CompanyCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: COLORS.white,
     borderRadius: BorderRadius.xl,
     padding: 16,
@@ -59,13 +66,13 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.gray50,
     borderWidth: 1,
     borderColor: COLORS.gray100,
-    alignItems: 'center',
-    justifyContent: 'center',
-    overflow: 'hidden',
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
   },
   logoImage: {
-    width: '80%',
-    height: '80%',
+    width: "80%",
+    height: "80%",
   },
   info: {
     flex: 1,
@@ -73,12 +80,12 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: FontSizes.lg,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.gray900,
     marginBottom: 4,
   },
   badgeRow: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   badge: {
     backgroundColor: COLORS.gray100,
@@ -88,7 +95,7 @@ const styles = StyleSheet.create({
   },
   badgeText: {
     fontSize: 10,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.gray600,
   },
   chevron: {

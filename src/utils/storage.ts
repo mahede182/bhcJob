@@ -1,60 +1,47 @@
 import * as SecureStore from "expo-secure-store";
 
-const TOKEN_KEY = "auth_token";
-const USER_KEY = "user_data";
+const ACCESS_TOKEN = "access_token";
+const REFRESH_TOKEN = "refresh_token";
+const USER_DATA = "user_data";
 
 export const storage = {
-  async saveToken(token: string) {
-    try {
-      await SecureStore.setItemAsync(TOKEN_KEY, token);
-    } catch (error) {
-      console.error("Error saving token", error);
-    }
+  saveToken: async (token: string) => {
+    await SecureStore.setItemAsync(ACCESS_TOKEN, token);
   },
 
-  async getToken() {
-    try {
-      return await SecureStore.getItemAsync(TOKEN_KEY);
-    } catch (error) {
-      console.error("Error getting token", error);
-      return null;
-    }
+  getToken: async () => {
+    return await SecureStore.getItemAsync(ACCESS_TOKEN);
   },
 
-  async removeToken() {
-    try {
-      await SecureStore.deleteItemAsync(TOKEN_KEY);
-    } catch (error) {
-      console.error("Error removing token", error);
-    }
+  saveRefreshToken: async (refreshToken: string) => {
+    await SecureStore.setItemAsync(REFRESH_TOKEN, refreshToken);
   },
 
-  async saveUser(user: any) {
-    try {
-      await SecureStore.setItemAsync(USER_KEY, JSON.stringify(user));
-    } catch (error) {
-      console.error("Error saving user data", error);
-    }
+  getRefreshToken: async () => {
+    return await SecureStore.getItemAsync(REFRESH_TOKEN);
   },
 
-  async getUser() {
-    try {
-      const user = await SecureStore.getItemAsync(USER_KEY);
-      return user ? JSON.parse(user) : null;
-    } catch (error) {
-      console.error("Error getting user data", error);
-      return null;
-    }
+  saveUser: async (user: any) => {
+    await SecureStore.setItemAsync(USER_DATA, JSON.stringify(user));
   },
 
-  async clearAll() {
-    try {
-      await Promise.all([
-        SecureStore.deleteItemAsync(TOKEN_KEY),
-        SecureStore.deleteItemAsync(USER_KEY),
-      ]);
-    } catch (error) {
-      console.error("Error clearing storage", error);
-    }
+  getUser: async () => {
+    const raw = await SecureStore.getItemAsync(USER_DATA);
+    return raw ? JSON.parse(raw) : null;
+  },
+
+  clearAll: async () => {
+    await SecureStore.deleteItemAsync(ACCESS_TOKEN);
+    await SecureStore.deleteItemAsync(REFRESH_TOKEN);
+    await SecureStore.deleteItemAsync(USER_DATA);
   },
 };
+
+// Keep legacy exports for backward compatibility
+export const saveTokens = storage.saveToken;
+export const getTokens = async () => {
+  const accessToken = await storage.getToken();
+  const refreshToken = await storage.getRefreshToken();
+  return { accessToken, refreshToken };
+};
+export const clearTokens = storage.clearAll;

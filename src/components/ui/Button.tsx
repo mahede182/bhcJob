@@ -1,22 +1,32 @@
-import { BorderRadius, COLORS, FontSizes, Shadows } from '@/constants/theme';
-import React from 'react';
-import { ActivityIndicator, StyleSheet, Text, type ViewStyle } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
-import Animated, { useAnimatedStyle, useSharedValue, withSpring } from 'react-native-reanimated';
+import { BorderRadius, COLORS, FontSizes, Shadows } from "@/constants/theme";
+import React from "react";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  type ViewStyle,
+} from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Animated, {
+  useAnimatedStyle,
+  useSharedValue,
+  withSpring,
+} from "react-native-reanimated";
 
-interface ButtonProps {
-  title: string;
-  onPress: () => void;
-  variant?: 'primary' | 'outline' | 'ghost';
-  loading?: boolean;
-  style?: ViewStyle;
-}
+import { type ButtonProps } from "@/@types/ui.type";
 
-const AnimatedTouchableOpacity = Animated.createAnimatedComponent(TouchableOpacity);
+const AnimatedTouchableOpacity =
+  Animated.createAnimatedComponent(TouchableOpacity);
 
-export default function Button({ title, onPress, variant = 'primary', loading, style }: ButtonProps) {
-  const isPrimary = variant === 'primary';
-  const isOutline = variant === 'outline';
+export default function Button({
+  title,
+  onPress,
+  variant = "primary",
+  loading,
+  style,
+}: ButtonProps) {
+  const isPrimary = variant === "primary";
+  const isOutline = variant === "outline";
   const scale = useSharedValue(1);
 
   const animatedStyle = useAnimatedStyle(() => ({
@@ -37,7 +47,7 @@ export default function Button({ title, onPress, variant = 'primary', loading, s
         styles.base,
         isPrimary && styles.primary,
         isOutline && styles.outline,
-        variant === 'ghost' && styles.ghost,
+        variant === "ghost" && styles.ghost,
         animatedStyle,
         style,
       ]}
@@ -54,7 +64,7 @@ export default function Button({ title, onPress, variant = 'primary', loading, s
           style={[
             styles.text,
             isPrimary && styles.primaryText,
-            (isOutline || variant === 'ghost') && styles.outlineText,
+            (isOutline || variant === "ghost") && styles.outlineText,
           ]}
         >
           {title}
@@ -68,9 +78,9 @@ const styles = StyleSheet.create({
   base: {
     paddingVertical: 16,
     borderRadius: BorderRadius.lg,
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
     ...Shadows.sm,
   },
   primary: {
@@ -82,14 +92,14 @@ const styles = StyleSheet.create({
     borderColor: COLORS.primary,
   },
   ghost: {
-    backgroundColor: 'transparent',
+    backgroundColor: "transparent",
     ...Shadows.sm, // remove shadow for ghost? actually user wants modern.
     shadowOpacity: 0,
     elevation: 0,
   },
   text: {
     fontSize: FontSizes.md,
-    fontWeight: '700',
+    fontWeight: "700",
     letterSpacing: 0.5,
   },
   primaryText: {

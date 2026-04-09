@@ -28,10 +28,12 @@ import { BlueTop } from "@/components/ui/BlueTop";
 import { useRegisterMutation } from "@/store/api/authApi";
 import Toast from "react-native-toast-message";
 
+import { type SignUpForm } from "@/@types/auth.type";
+
 export default function SignUpScreen() {
   const router = useRouter();
   const [register, { isLoading: loading }] = useRegisterMutation();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<SignUpForm>({
     name: "",
     phone: "",
     gender: "",
@@ -70,8 +72,6 @@ export default function SignUpScreen() {
         ...form,
         dob: dob?.toISOString().split("T")[0],
       }).unwrap();
-
-      //
 
       if (response.status) {
         Toast.show({

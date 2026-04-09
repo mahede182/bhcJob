@@ -1,28 +1,30 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Platform } from 'react-native';
-import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
-import { Ionicons } from '@expo/vector-icons';
-import { COLORS, FontSizes, BorderRadius } from '@/constants/theme';
+import React, { useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+} from "react-native";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
+import { Ionicons } from "@expo/vector-icons";
+import { COLORS, FontSizes, BorderRadius } from "@/constants/theme";
 
-interface DatePickerFieldProps {
-  label: string;
-  value: Date | null;
-  onChange: (date: Date) => void;
-  required?: boolean;
-  placeholder?: string;
-}
+import { type DatePickerFieldProps } from "@/@types/ui.type";
 
 export default function DatePickerField({
   label,
   value,
   onChange,
   required,
-  placeholder = 'Select date',
+  placeholder = "Select date",
 }: DatePickerFieldProps) {
   const [show, setShow] = useState(false);
 
   const handleChange = (_event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === "android") {
       setShow(false);
     }
     if (selectedDate) {
@@ -32,8 +34,8 @@ export default function DatePickerField({
 
   const formatDate = (date: Date) => {
     const y = date.getFullYear();
-    const m = String(date.getMonth() + 1).padStart(2, '0');
-    const d = String(date.getDate()).padStart(2, '0');
+    const m = String(date.getMonth() + 1).padStart(2, "0");
+    const d = String(date.getDate()).padStart(2, "0");
     return `${y}-${m}-${d}`;
   };
 
@@ -43,8 +45,16 @@ export default function DatePickerField({
         {label}
         {required && <Text style={styles.required}> *</Text>}
       </Text>
-      <TouchableOpacity style={styles.inputWrapper} onPress={() => setShow(true)}>
-        <Ionicons name="calendar-outline" size={18} color={COLORS.gray400} style={styles.icon} />
+      <TouchableOpacity
+        style={styles.inputWrapper}
+        onPress={() => setShow(true)}
+      >
+        <Ionicons
+          name="calendar-outline"
+          size={18}
+          color={COLORS.gray400}
+          style={styles.icon}
+        />
         <Text style={[styles.text, !value && styles.placeholder]}>
           {value ? formatDate(value) : placeholder}
         </Text>
@@ -54,7 +64,7 @@ export default function DatePickerField({
         <DateTimePicker
           value={value || new Date(2000, 0, 1)}
           mode="date"
-          display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+          display={Platform.OS === "ios" ? "spinner" : "default"}
           onChange={handleChange}
           maximumDate={new Date()}
         />
@@ -69,7 +79,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: FontSizes.sm,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.gray700,
     marginBottom: 6,
   },
@@ -77,8 +87,8 @@ const styles = StyleSheet.create({
     color: COLORS.error,
   },
   inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: COLORS.inputBg,
     borderRadius: BorderRadius.md,
     borderWidth: 1,

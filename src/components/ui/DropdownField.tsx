@@ -1,22 +1,17 @@
-import { BorderRadius, COLORS, FontSizes, Shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-import React, { useState } from 'react';
-import { FlatList, Modal, Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { BorderRadius, COLORS, FontSizes, Shadows } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import React, { useState } from "react";
+import {
+  FlatList,
+  Modal,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
-interface DropdownOption {
-  label: string;
-  value: string;
-}
-
-interface DropdownFieldProps {
-  label: string;
-  value: string;
-  options: DropdownOption[];
-  onChange: (value: string) => void;
-  required?: boolean;
-  placeholder?: string;
-  icon?: string;
-}
+import { type DropdownFieldProps } from "@/@types/ui.type";
 
 export default function DropdownField({
   label,
@@ -24,8 +19,8 @@ export default function DropdownField({
   options,
   onChange,
   required,
-  placeholder = 'Select option',
-  icon = 'chevron-down-outline',
+  placeholder = "Select option",
+  icon = "chevron-down-outline",
 }: DropdownFieldProps) {
   const [visible, setVisible] = useState(false);
 
@@ -37,8 +32,16 @@ export default function DropdownField({
         {label}
         {required && <Text style={styles.required}> *</Text>}
       </Text>
-      <TouchableOpacity style={styles.inputWrapper} onPress={() => setVisible(true)}>
-        <Ionicons name="people-outline" size={18} color={COLORS.gray400} style={styles.icon} />
+      <TouchableOpacity
+        style={styles.inputWrapper}
+        onPress={() => setVisible(true)}
+      >
+        <Ionicons
+          name="people-outline"
+          size={18}
+          color={COLORS.gray400}
+          style={styles.icon}
+        />
         <Text style={[styles.text, !value && styles.placeholder]}>
           {selectedLabel || placeholder}
         </Text>
@@ -54,7 +57,10 @@ export default function DropdownField({
               keyExtractor={(item) => item.value}
               renderItem={({ item }) => (
                 <TouchableOpacity
-                  style={[styles.option, item.value === value && styles.optionSelected]}
+                  style={[
+                    styles.option,
+                    item.value === value && styles.optionSelected,
+                  ]}
                   onPress={() => {
                     onChange(item.value);
                     setVisible(false);
@@ -69,7 +75,11 @@ export default function DropdownField({
                     {item.label}
                   </Text>
                   {item.value === value && (
-                    <Ionicons name="checkmark-circle" size={20} color={COLORS.primary} />
+                    <Ionicons
+                      name="checkmark-circle"
+                      size={20}
+                      color={COLORS.primary}
+                    />
                   )}
                 </TouchableOpacity>
               )}
@@ -87,7 +97,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: FontSizes.sm,
-    fontWeight: '600',
+    fontWeight: "600",
     color: COLORS.gray700,
     marginBottom: 6,
   },
@@ -95,8 +105,8 @@ const styles = StyleSheet.create({
     color: COLORS.error,
   },
   inputWrapper: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     backgroundColor: COLORS.inputBg,
     borderRadius: BorderRadius.md,
     borderWidth: 1,
@@ -117,8 +127,8 @@ const styles = StyleSheet.create({
   },
   overlay: {
     flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.45)',
-    justifyContent: 'center',
+    backgroundColor: "rgba(0,0,0,0.45)",
+    justifyContent: "center",
     paddingHorizontal: 32,
   },
   dropdown: {
@@ -130,14 +140,14 @@ const styles = StyleSheet.create({
   },
   dropdownTitle: {
     fontSize: FontSizes.lg,
-    fontWeight: '700',
+    fontWeight: "700",
     color: COLORS.gray900,
     marginBottom: 16,
   },
   option: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 14,
     paddingHorizontal: 12,
     borderRadius: BorderRadius.md,
@@ -149,10 +159,10 @@ const styles = StyleSheet.create({
   optionText: {
     fontSize: FontSizes.md,
     color: COLORS.gray700,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   optionTextSelected: {
     color: COLORS.primary,
-    fontWeight: '700',
+    fontWeight: "700",
   },
 });

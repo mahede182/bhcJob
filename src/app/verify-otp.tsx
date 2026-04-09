@@ -21,12 +21,14 @@ import { setCredentials } from "@/store/slices/authSlice";
 import { storage } from "@/utils/storage";
 import Toast from "react-native-toast-message";
 
+import { type VerifyOtpParams } from "@/@types/auth.type";
+
 export default function VerifyOtpScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const inputRef = useRef<TextInput>(null);
   const [verifyOtp, { isLoading: loading }] = useVerifyOtpMutation();
-  const { phone } = useLocalSearchParams<{ phone: string }>();
+  const { phone } = useLocalSearchParams<VerifyOtpParams>();
   const [otp, setOtp] = useState("");
 
   const handleVerify = async () => {

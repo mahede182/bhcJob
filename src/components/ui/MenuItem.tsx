@@ -1,14 +1,9 @@
-import { BorderRadius, COLORS, FontSizes, Shadows } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { BorderRadius, COLORS, FontSizes, Shadows } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface MenuItemProps {
-  icon: any;
-  title: string;
-  color?: string;
-  onPress?: () => void;
-}
+import { type MenuItemProps } from "@/@types/ui.type";
 
 export default function MenuItem({
   icon,
@@ -17,7 +12,11 @@ export default function MenuItem({
   onPress,
 }: MenuItemProps) {
   return (
-    <TouchableOpacity style={styles.menuItem} onPress={onPress} activeOpacity={0.7}>
+    <TouchableOpacity
+      style={styles.menuItem}
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
       <View style={styles.menuItemLeft}>
         <View style={styles.menuIconWrapper}>
           <Ionicons name={icon} size={20} color={color} />
@@ -31,9 +30,9 @@ export default function MenuItem({
 
 const styles = StyleSheet.create({
   menuItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: COLORS.white,
     padding: 16,
     borderRadius: BorderRadius.lg,
@@ -41,8 +40,8 @@ const styles = StyleSheet.create({
     ...Shadows.sm,
   },
   menuItemLeft: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: 16,
   },
   menuIconWrapper: {
@@ -50,11 +49,11 @@ const styles = StyleSheet.create({
     height: 36,
     borderRadius: 10,
     backgroundColor: COLORS.gray50,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   menuTitle: {
     fontSize: FontSizes.md,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
