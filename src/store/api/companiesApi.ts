@@ -1,4 +1,4 @@
-import type { ApiResponse, Company } from "@/@types/api";
+import type { ApiResponse, Company } from "@/@types/api.type";
 import { apiSlice } from "../slices/apiSlice";
 
 export const companiesApi = apiSlice.injectEndpoints({

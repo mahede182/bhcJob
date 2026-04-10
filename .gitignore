@@ -42,3 +42,37 @@ app-example
 # generated native folders
 /ios
 /android
+
+# AI IDEs & Agents
+## Windsurf / Codeium
+.windsurf/
+.codeium/
+*.codeium-windsurf
+
+## Cursor
+.cursor/
+.cursorignore
+
+## GitHub Copilot
+.github/copilot-*
+
+## Claude / Anthropic
+.claude/
+
+## General AI/LLM
+.ai/
+.agent/
+.agents/
+.memory/
+.conversations/
+.cache/ai-*
+*.prompt.md
+*.llm-cache
+
+# IDE configs (backup/sync files)
+*.swp
+*.swo
+*~
+.idea/
+.vscode/settings.json
+.vscode/launch.json

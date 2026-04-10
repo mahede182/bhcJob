@@ -1,16 +1,21 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { COLORS, FontSizes, Spacing } from '@/constants/theme';
+import { FontSizes, Spacing } from "@/constants/theme";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-interface SectionHeaderProps {
-  title: string;
-  onViewAll?: () => void;
-}
+import { type SectionHeaderProps } from "@/@types/ui.type";
+import { useTheme } from "@/hooks/useTheme";
 
-export default function SectionHeader({ title, onViewAll }: SectionHeaderProps) {
+export default function SectionHeader({
+  title,
+  onViewAll,
+}: SectionHeaderProps) {
+  const { colors } = useTheme();
+
+  const styles = createStyles(colors);
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={[styles.title, { color: colors.text }]}>{title}</Text>
       {onViewAll && (
         <TouchableOpacity onPress={onViewAll}>
           <Text style={styles.viewAll}>View All →</Text>
@@ -20,22 +25,23 @@ export default function SectionHeader({ title, onViewAll }: SectionHeaderProps) 
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: Spacing.three,
-    marginBottom: Spacing.two,
-  },
-  title: {
-    fontSize: FontSizes.xl,
-    fontWeight: '700',
-    color: COLORS.gray900,
-  },
-  viewAll: {
-    fontSize: FontSizes.sm,
-    color: COLORS.primary,
-    fontWeight: '600',
-  },
-});
+const createStyles = (colors: any) =>
+  StyleSheet.create({
+    container: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      alignItems: "center",
+      paddingHorizontal: Spacing.three,
+      marginBottom: Spacing.two,
+    },
+    title: {
+      fontSize: FontSizes.xl,
+      fontWeight: "700",
+      color: colors.black,
+    },
+    viewAll: {
+      fontSize: FontSizes.sm,
+      color: colors.primary,
+      fontWeight: "600",
+    },
+  });

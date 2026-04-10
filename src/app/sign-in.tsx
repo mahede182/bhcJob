@@ -20,15 +20,16 @@ import Button from "@/components/ui/Button";
 import Divider from "@/components/ui/Divider";
 import Header from "@/components/ui/Header";
 import Input from "@/components/ui/Input";
+import { useTheme } from "@/hooks/useTheme";
 import Animated, { FadeInDown } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { BlueTop } from "@/components/ui/BlueTop";
+import { useLoginMutation } from "@/store/api/authApi";
 import { useAppDispatch } from "@/store/hooks";
 import { setCredentials } from "@/store/slices/authSlice";
-import { useLoginMutation } from "@/store/api/authApi";
 import { storage } from "@/utils/storage";
-import Toast from "react-native-toast-message";
+import { showToast } from "@/utils/toast";
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -36,13 +37,14 @@ export default function SignInScreen() {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [login, { isLoading: loading }] = useLoginMutation();
+  const { colors } = useTheme();
 
   const handleSignIn = async () => {
     if (!phone || !password) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Please enter phone and password",
+        title: "Error",
+        message: "Please enter phone and password",
       });
       return;
     }
@@ -53,17 +55,15 @@ export default function SignInScreen() {
       if (response.status && response.data) {
         const { token, user } = response.data;
 
-        // Save to Secure Storage for persistence
         if (token) await storage.saveToken(token);
         if (user) await storage.saveUser(user);
 
-        // Update Redux state for immediate access
         dispatch(setCredentials({ user, token }));
 
-        Toast.show({
+        showToast({
           type: "success",
-          text1: "Welcome back!",
-          text2: "Login successful",
+          title: "Welcome back!",
+          message: "Login successful",
         });
         router.replace("/(tabs)");
       } else {
@@ -75,23 +75,25 @@ export default function SignInScreen() {
           }
         }
 
-        Toast.show({
+        showToast({
           type: "error",
-          text1: "Login Failed",
-          text2: errorMessage,
+          title: "Login Failed",
+          message: errorMessage,
         });
       }
     } catch (error: any) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Network Error",
-        text2: error?.data?.message || "Something went wrong during login",
+        title: "Network Error",
+        message: error?.data?.message || "Something went wrong during login",
       });
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
         <Header actionLabel="Sign Up" actionRoute="/sign-up" />
 
@@ -100,14 +102,21 @@ export default function SignInScreen() {
         <View style={styles.cardWrapper}>
           <Animated.View
             entering={FadeInDown.duration(600)}
-            style={styles.card}
+            style={[styles.card, { backgroundColor: colors.surface }]}
           >
             {/* User Icon */}
             <View style={styles.avatarRow}>
-              <View style={styles.avatar}>
-                <Ionicons name="person" size={24} color={COLORS.primary} />
+              <View
+                style={[
+                  styles.avatar,
+                  { backgroundColor: colors.surfaceSelected },
+                ]}
+              >
+                <Ionicons name="person" size={24} color={colors.primary} />
               </View>
-              <Text style={styles.cardTitle}>Sign In</Text>
+              <Text style={[styles.cardTitle, { color: colors.text }]}>
+                Sign In
+              </Text>
             </View>
 
             <Input
@@ -129,7 +138,9 @@ export default function SignInScreen() {
             />
 
             <TouchableOpacity style={styles.forgotRow}>
-              <Text style={styles.forgotText}>Forgot Your Password?</Text>
+              <Text style={[styles.forgotText, { color: colors.primary }]}>
+                Forgot Your Password?
+              </Text>
             </TouchableOpacity>
 
             <Button title="SIGN IN" onPress={handleSignIn} loading={loading} />
@@ -137,11 +148,15 @@ export default function SignInScreen() {
             <Divider />
 
             <View style={styles.switchRow}>
-              <Text style={styles.switchText}>
+              <Text
+                style={[styles.switchText, { color: colors.textSecondary }]}
+              >
                 Don&apos;t have an account?{" "}
               </Text>
               <TouchableOpacity onPress={() => router.push("/sign-up")}>
-                <Text style={styles.switchLink}>Sign Up</Text>
+                <Text style={[styles.switchLink, { color: colors.primary }]}>
+                  Sign Up
+                </Text>
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -180,7 +195,7 @@ const styles = StyleSheet.create({
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: COLORS.primaryLight,
+    backgroundColor: COLORS.gray100,
     alignItems: "center",
     justifyContent: "center",
   },

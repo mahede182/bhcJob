@@ -26,12 +26,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { BlueTop } from "@/components/ui/BlueTop";
 import { useRegisterMutation } from "@/store/api/authApi";
-import Toast from "react-native-toast-message";
+import { showToast } from "@/utils/toast";
+
+import { type SignUpForm } from "@/@types/auth.type";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function SignUpScreen() {
   const router = useRouter();
   const [register, { isLoading: loading }] = useRegisterMutation();
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<SignUpForm>({
     name: "",
     phone: "",
     gender: "",
@@ -41,6 +44,7 @@ export default function SignUpScreen() {
     confirm_password: "",
   });
   const [dob, setDob] = useState<Date | null>(null);
+  const { colors } = useTheme();
 
   const updateField = (field: keyof typeof form) => (value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -48,19 +52,19 @@ export default function SignUpScreen() {
 
   const handleSignUp = async () => {
     if (!form.phone || !form.password || !form.name || !form.gender) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Please fill in all required fields including Gender",
+        title: "Error",
+        message: "Please fill in all required fields including Gender",
       });
       return;
     }
 
     if (form.password !== form.confirm_password) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Passwords do not match",
+        title: "Error",
+        message: "Passwords do not match",
       });
       return;
     }
@@ -71,13 +75,11 @@ export default function SignUpScreen() {
         dob: dob?.toISOString().split("T")[0],
       }).unwrap();
 
-      //
-
       if (response.status) {
-        Toast.show({
+        showToast({
           type: "success",
-          text1: "Account Created",
-          text2: "Please verify your phone number",
+          title: "Account Created",
+          message: "Please verify your phone number",
         });
         router.push({
           pathname: "/verify-otp",
@@ -96,23 +98,25 @@ export default function SignUpScreen() {
           }
         }
 
-        Toast.show({
+        showToast({
           type: "error",
-          text1: "Registration Failed",
-          text2: errorMessage,
+          title: "Registration Failed",
+          message: errorMessage,
         });
       }
     } catch (error: any) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Network Error",
-        text2: error?.data?.message || "Something went wrong",
+        title: "Network Error",
+        message: error?.data?.message || "Something went wrong",
       });
     }
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 100 }}
@@ -122,7 +126,7 @@ export default function SignUpScreen() {
         <View style={styles.cardWrapper}>
           <Animated.View
             entering={FadeInDown.duration(600)}
-            style={styles.card}
+            style={[styles.card, { backgroundColor: colors.surface }]}
           >
             <Input
               label="Full Name"
@@ -213,9 +217,15 @@ export default function SignUpScreen() {
             <Divider />
 
             <View style={styles.switchRow}>
-              <Text style={styles.switchText}>Already have an account? </Text>
+              <Text
+                style={[styles.switchText, { color: colors.textSecondary }]}
+              >
+                Already have an account?{" "}
+              </Text>
               <TouchableOpacity onPress={() => router.push("/sign-in")}>
-                <Text style={styles.switchLink}>Sign In</Text>
+                <Text style={[styles.switchLink, { color: colors.primary }]}>
+                  Sign In
+                </Text>
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -230,17 +240,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F8F9FA",
   },
-  titleSection: {
-    paddingHorizontal: Spacing.four,
-    paddingTop: 20,
-    marginBottom: 10,
-  },
-  welcomeText: {
-    fontSize: FontSizes.xxl * 1.2,
-    fontWeight: "800",
-    color: COLORS.gray900,
-    letterSpacing: -1,
-  },
   cardWrapper: {
     paddingHorizontal: Spacing.four,
     marginTop: -20,
@@ -250,15 +249,6 @@ const styles = StyleSheet.create({
     borderRadius: BorderRadius.xl,
     padding: 20,
     ...Shadows.md,
-  },
-  cardTitle: {
-    fontSize: FontSizes.lg,
-    fontWeight: "700",
-    color: COLORS.gray800,
-    marginBottom: 20,
-    borderLeftWidth: 4,
-    borderLeftColor: COLORS.primary,
-    paddingLeft: 12,
   },
   row: {
     flexDirection: "row",
@@ -270,7 +260,7 @@ const styles = StyleSheet.create({
   },
   switchText: {
     fontSize: FontSizes.md,
-    color: COLORS.gray500,
+    color: COLORS.gray600,
   },
   switchLink: {
     fontSize: FontSizes.md,

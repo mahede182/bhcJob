@@ -1,10 +1,4 @@
-import {
-  BorderRadius,
-  COLORS,
-  FontSizes,
-  Shadows,
-  Spacing,
-} from "@/constants/theme";
+import { COLORS, FontSizes, Shadows, Spacing } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -18,33 +12,37 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import ProfileStats from "@/components/profile/ProfileStats";
 import MenuItem from "@/components/ui/MenuItem";
 import { BLOG } from "@/constants/api";
+import { PROFILE_STATS } from "@/constants/data";
+import { useTheme } from "@/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logOut, selectCurrentUser } from "@/store/slices/authSlice";
 import { storage } from "@/utils/storage";
-import Toast from "react-native-toast-message";
+import { showToast } from "@/utils/toast";
 
 export default function ProfileScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectCurrentUser);
+  const { colors } = useTheme();
 
   const handleSignOut = async () => {
     try {
       await storage.clearAll();
       dispatch(logOut());
-      Toast.show({
+      showToast({
         type: "info",
-        text1: "Signed Out",
-        text2: "You have been signed out successfully.",
+        title: "Signed Out",
+        message: "You have been signed out successfully.",
       });
       router.replace("/sign-in");
     } catch {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Something went wrong during sign out",
+        title: "Error",
+        message: "Something went wrong during sign out",
       });
     }
   };
@@ -56,25 +54,45 @@ export default function ProfileScreen() {
       if (supported) {
         await Linking.openURL(url);
       } else {
-        Toast.show({
+        showToast({
           type: "error",
-          text1: "Error",
-          text2: "Unable to open blog link",
+          title: "Error",
+          message: "Unable to open blog link",
         });
       }
-    } catch {}
+    } catch {
+      showToast({
+        type: "error",
+        title: "Error",
+        message: "Unable to open blog link",
+      });
+    }
+  };
+
+  const handleEditProfile = () => {
+    // Navigate to edit profile
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <ScrollView
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={styles.scrollContent}
       >
         {/* Profile Header */}
-        <View style={styles.header}>
+        <View style={[styles.header, { backgroundColor: colors.primary }]}>
           <View style={styles.profileInfo}>
-            <View style={styles.avatarWrapper}>
+            <View
+              style={[
+                styles.avatarWrapper,
+                {
+                  backgroundColor: COLORS.primaryLight,
+                  borderColor: COLORS.white,
+                },
+              ]}
+            >
               <Ionicons name="person" size={40} color={COLORS.primary} />
             </View>
             <View style={styles.nameSection}>
@@ -83,7 +101,10 @@ export default function ProfileScreen() {
                 {user?.email || user?.phone || "No email provided"}
               </Text>
             </View>
-            <TouchableOpacity style={styles.editButton}>
+            <TouchableOpacity
+              style={[styles.editButton, { backgroundColor: COLORS.gray100 }]}
+              onPress={handleEditProfile}
+            >
               <Ionicons
                 name="create-outline"
                 size={20}
@@ -94,27 +115,16 @@ export default function ProfileScreen() {
         </View>
 
         {/* Stats Section */}
-        <View style={styles.statsRow}>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>12</Text>
-            <Text style={styles.statLabel}>Applied</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>5</Text>
-            <Text style={styles.statLabel}>Interviews</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statValue}>3</Text>
-            <Text style={styles.statLabel}>Offers</Text>
-          </View>
-        </View>
+        <ProfileStats stats={PROFILE_STATS} />
 
         {/* Menu Section */}
         <View style={styles.menuContainer}>
           <MenuItem icon="document-text-outline" title="My Resume" />
           <MenuItem icon="bookmark-outline" title="Saved Jobs" />
-          <MenuItem icon="notifications-outline" title="Job Alerts" />
-          <MenuItem icon="settings-outline" title="Settings" />
+          {/* <MenuItem icon="notifications-outline" title="Job Alerts" /> */}
+          {/* <MenuItem icon="settings-outline" title="Settings" /> */}
+          <MenuItem icon="color-palette-outline" title="Theme" />
+          <MenuItem icon="language-outline" title="Language" />
           <MenuItem icon="help-circle-outline" title="Help Center" />
           <MenuItem
             icon="newspaper-outline"
@@ -137,6 +147,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F8F9FA",
+  },
+  scrollContent: {
+    paddingBottom: 100,
   },
   header: {
     paddingTop: 60,
@@ -185,32 +198,6 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.gray100,
     alignItems: "center",
     justifyContent: "center",
-  },
-  statsRow: {
-    flexDirection: "row",
-    paddingHorizontal: Spacing.four,
-    gap: 16,
-    marginTop: -20,
-  },
-  statCard: {
-    flex: 1,
-    backgroundColor: COLORS.white,
-    padding: 16,
-    borderRadius: BorderRadius.lg,
-    alignItems: "center",
-    ...Shadows.md,
-  },
-  statValue: {
-    fontSize: FontSizes.xl,
-    fontWeight: "800",
-    color: COLORS.primary,
-  },
-  statLabel: {
-    fontSize: 10,
-    fontWeight: "700",
-    color: COLORS.gray500,
-    marginTop: 4,
-    textTransform: "uppercase",
   },
   menuContainer: {
     marginTop: Spacing.five,

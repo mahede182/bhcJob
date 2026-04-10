@@ -1,7 +1,7 @@
+import { COLORS, FontSizes, Shadows, Spacing } from "@/constants/theme";
+import { useGetCompaniesQuery } from "@/store/api/companiesApi";
 import { useGetIndustriesQuery } from "@/store/api/industriesApi";
 import { useGetJobsQuery } from "@/store/api/jobsApi";
-import { useGetCompaniesQuery } from "@/store/api/companiesApi";
-import { COLORS, FontSizes, Shadows, Spacing } from "@/constants/theme";
 import React from "react";
 import {
   ActivityIndicator,
@@ -19,6 +19,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import CompanyCard from "@/components/home/CompanyCard";
 import IndustryCard from "@/components/home/IndustryCard";
 import JobCard from "@/components/home/JobCard";
+import { useTheme } from "@/hooks/useTheme";
 import { useAppSelector } from "@/store/hooks";
 import { selectCurrentUser } from "@/store/slices/authSlice";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -28,16 +29,21 @@ export default function HomeScreen() {
   const { data: industries, isLoading: indLoading } = useGetIndustriesQuery({});
   const { data: jobs, isLoading: jobsLoading } = useGetJobsQuery({});
   const { data: companies, isLoading: compLoading } = useGetCompaniesQuery({});
+  const { colors } = useTheme();
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: colors.background }]}
+    >
       <ScrollView
-        style={styles.scroll}
+        style={[styles.scroll, { backgroundColor: colors.background }]}
         showsVerticalScrollIndicator={false}
         contentContainerStyle={{ paddingBottom: 140 }}
       >
         <Header
-          actionLabel={user ? `Hi, ${user.name.split(" ")[0]}` : "Sign In"}
+          actionLabel={
+            user ? `Hi, ${(user.name || "User").split(" ")[0]}` : "Sign In"
+          }
           actionRoute={user ? "/profile" : "/sign-in"}
         />
 
@@ -55,7 +61,7 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <SectionHeader title="Popular Category" />
           {indLoading ? (
-            <ActivityIndicator color={COLORS.primary} style={{ padding: 20 }} />
+            <ActivityIndicator color={colors.primary} style={{ padding: 20 }} />
           ) : (
             <FlatList
               data={industries}
@@ -74,7 +80,7 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <SectionHeader title="Recommended Jobs" />
           {jobsLoading ? (
-            <ActivityIndicator color={COLORS.primary} style={{ padding: 20 }} />
+            <ActivityIndicator color={colors.primary} style={{ padding: 20 }} />
           ) : (
             jobs
               ?.slice(0, 5)
@@ -88,7 +94,7 @@ export default function HomeScreen() {
         <View style={styles.section}>
           <SectionHeader title="Top Companies" />
           {compLoading ? (
-            <ActivityIndicator color={COLORS.primary} style={{ padding: 20 }} />
+            <ActivityIndicator color={colors.primary} style={{ padding: 20 }} />
           ) : (
             companies?.map((company, index) => (
               <CompanyCard key={company.id} company={company} index={index} />
@@ -103,6 +109,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: COLORS.white,
   },
   scroll: {
     flex: 1,
