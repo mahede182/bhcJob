@@ -14,7 +14,10 @@ import {
 } from "@/constants/theme";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -45,6 +48,7 @@ export default function SignUpScreen() {
   });
   const [dob, setDob] = useState<Date | null>(null);
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const updateField = (field: keyof typeof form) => (value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -54,8 +58,8 @@ export default function SignUpScreen() {
     if (!form.phone || !form.password || !form.name || !form.gender) {
       showToast({
         type: "error",
-        title: "Error",
-        message: "Please fill in all required fields including Gender",
+        title: t("common.error"),
+        message: t("auth.pleaseFillRequired"),
       });
       return;
     }
@@ -63,8 +67,8 @@ export default function SignUpScreen() {
     if (form.password !== form.confirm_password) {
       showToast({
         type: "error",
-        title: "Error",
-        message: "Passwords do not match",
+        title: t("common.error"),
+        message: t("auth.passwordsNotMatch"),
       });
       return;
     }
@@ -78,8 +82,8 @@ export default function SignUpScreen() {
       if (response.status) {
         showToast({
           type: "success",
-          title: "Account Created",
-          message: "Please verify your phone number",
+          title: t("auth.accountCreated"),
+          message: t("auth.verifyPhone"),
         });
         router.push({
           pathname: "/verify-otp",
@@ -88,7 +92,7 @@ export default function SignUpScreen() {
       } else {
         // Handle application-level errors (status: false)
         const errorData = response.error;
-        let errorMessage = "Registration failed";
+        let errorMessage = t("auth.registrationFailed");
 
         if (errorData) {
           // Extract the first error message from the validation object
@@ -100,15 +104,15 @@ export default function SignUpScreen() {
 
         showToast({
           type: "error",
-          title: "Registration Failed",
+          title: t("auth.registrationFailed"),
           message: errorMessage,
         });
       }
     } catch (error: any) {
       showToast({
         type: "error",
-        title: "Network Error",
-        message: error?.data?.message || "Something went wrong",
+        title: t("auth.networkError"),
+        message: error?.data?.message || t("auth.somethingWentWrong"),
       });
     }
   };
@@ -117,120 +121,126 @@ export default function SignUpScreen() {
     <SafeAreaView
       style={[styles.container, { backgroundColor: colors.background }]}
     >
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingBottom: 100 }}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
       >
-        <Header actionLabel="Sign In" actionRoute="/sign-in" />
-        <BlueTop />
-        <View style={styles.cardWrapper}>
-          <Animated.View
-            entering={FadeInDown.duration(600)}
-            style={[styles.card, { backgroundColor: colors.surface }]}
-          >
-            <Input
-              label="Full Name"
-              required
-              placeholder="Enter your full name"
-              icon="person-outline"
-              value={form.name}
-              onChangeText={updateField("name")}
-            />
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <Header actionLabel={t("auth.signIn")} actionRoute="/sign-in" />
+          <BlueTop />
+          <View style={styles.cardWrapper}>
+            <Animated.View
+              entering={FadeInDown.duration(600)}
+              style={[styles.card, { backgroundColor: colors.surface }]}
+            >
+              <Input
+                label={t("auth.fullName")}
+                required
+                placeholder={t("auth.enterFullName")}
+                icon="person-outline"
+                value={form.name}
+                onChangeText={updateField("name")}
+              />
 
-            <Input
-              label="Mobile Number"
-              required
-              placeholder="01XXXXXXXXX"
-              icon="phone-portrait-outline"
-              keyboardType="phone-pad"
-              value={form.phone}
-              onChangeText={updateField("phone")}
-            />
+              <Input
+                label={t("auth.mobileNumber")}
+                required
+                placeholder="01XXXXXXXXX"
+                icon="phone-portrait-outline"
+                keyboardType="phone-pad"
+                value={form.phone}
+                onChangeText={updateField("phone")}
+              />
 
-            <View style={styles.row}>
-              <View style={{ flex: 1 }}>
-                <DatePickerField
-                  label="Date of Birth"
-                  value={dob}
-                  onChange={setDob}
-                  placeholder="Select date"
-                />
+              <View style={styles.row}>
+                <View style={{ flex: 1 }}>
+                  <DatePickerField
+                    label={t("auth.dateOfBirth")}
+                    value={dob}
+                    onChange={setDob}
+                    placeholder={t("auth.selectDate")}
+                  />
+                </View>
+                <View style={{ width: 16 }} />
+                <View style={{ flex: 1 }}>
+                  <DropdownField
+                    label={t("auth.gender")}
+                    value={form.gender}
+                    options={GENDER}
+                    onChange={updateField("gender")}
+                    placeholder={t("auth.selectGender")}
+                  />
+                </View>
               </View>
-              <View style={{ width: 16 }} />
-              <View style={{ flex: 1 }}>
-                <DropdownField
-                  label="Gender"
-                  value={form.gender}
-                  options={GENDER}
-                  onChange={updateField("gender")}
-                  placeholder="Select"
-                />
-              </View>
-            </View>
 
-            <Input
-              label="Email Address"
-              placeholder="example@mail.com"
-              icon="mail-outline"
-              keyboardType="email-address"
-              autoCapitalize="none"
-              value={form.email}
-              onChangeText={updateField("email")}
-            />
+              <Input
+                label={t("auth.email")}
+                placeholder="example@mail.com"
+                icon="mail-outline"
+                keyboardType="email-address"
+                autoCapitalize="none"
+                value={form.email}
+                onChangeText={updateField("email")}
+              />
 
-            <Input
-              label="Passport Number"
-              placeholder="Enter passport number"
-              required
-              icon="card-outline"
-              value={form.passport_number}
-              onChangeText={updateField("passport_number")}
-            />
+              <Input
+                label={t("auth.passport")}
+                placeholder={t("auth.enterPassport")}
+                required
+                icon="card-outline"
+                value={form.passport_number}
+                onChangeText={updateField("passport_number")}
+              />
 
-            <Input
-              label="Password"
-              required
-              placeholder="Create a password"
-              icon="lock-closed-outline"
-              secureTextEntry
-              value={form.password}
-              onChangeText={updateField("password")}
-            />
+              <Input
+                label={t("auth.password")}
+                required
+                placeholder={t("auth.createPassword")}
+                icon="lock-closed-outline"
+                secureTextEntry
+                value={form.password}
+                onChangeText={updateField("password")}
+              />
 
-            <Input
-              label="Confirm Password"
-              required
-              placeholder="Repeat your password"
-              icon="lock-closed-outline"
-              secureTextEntry
-              value={form.confirm_password}
-              onChangeText={updateField("confirm_password")}
-            />
+              <Input
+                label={t("auth.confirmPassword")}
+                required
+                placeholder={t("auth.repeatPassword")}
+                icon="lock-closed-outline"
+                secureTextEntry
+                value={form.confirm_password}
+                onChangeText={updateField("confirm_password")}
+              />
 
-            <Button
-              title="Sign Up"
-              onPress={handleSignUp}
-              loading={loading}
-              style={{ marginTop: 10 }}
-            />
+              <Button
+                title={t("auth.signUp")}
+                onPress={handleSignUp}
+                loading={loading}
+                style={{ marginTop: 10 }}
+              />
 
-            <Divider />
+              <Divider />
 
-            <View style={styles.switchRow}>
-              <Text
-                style={[styles.switchText, { color: colors.textSecondary }]}
-              >
-                Already have an account?{" "}
-              </Text>
-              <TouchableOpacity onPress={() => router.push("/sign-in")}>
-                <Text style={[styles.switchLink, { color: colors.primary }]}>
-                  Sign In
+              <View style={styles.switchRow}>
+                <Text
+                  style={[styles.switchText, { color: colors.textSecondary }]}
+                >
+                  {t("auth.alreadyHaveAccount")}{" "}
                 </Text>
-              </TouchableOpacity>
-            </View>
-          </Animated.View>
-        </View>
-      </ScrollView>
+                <TouchableOpacity onPress={() => router.push("/sign-in")}>
+                  <Text style={[styles.switchLink, { color: colors.primary }]}>
+                    {t("auth.signIn")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Animated.View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -239,6 +249,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#F8F9FA",
+  },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
+    paddingBottom: 100,
   },
   cardWrapper: {
     paddingHorizontal: Spacing.four,

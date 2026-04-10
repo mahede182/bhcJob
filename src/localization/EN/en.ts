@@ -59,6 +59,13 @@ export const enTranslations = {
     somethingWentWrong: "Something went wrong",
     enterCompleteOtp: "Please enter the complete 4-digit OTP",
     phoneVerified: "Phone verified successfully!",
+    pleaseFillRequired: "Please fill in all required fields",
+    enterFullName: "Enter your full name",
+    createPassword: "Create a password",
+    repeatPassword: "Repeat your password",
+    enterPassport: "Enter passport number",
+    selectDate: "Select date",
+    selectGender: "Select",
   },
   home: {
     welcome: "Welcome to BHC Jobs",

@@ -59,6 +59,13 @@ export const arTranslations = {
     somethingWentWrong: "حدث خطأ ما",
     enterCompleteOtp: "الرجاء إدخال الرمز المكون من 4 أرقام بالكامل",
     phoneVerified: "تم التحقق من الهاتف بنجاح!",
+    pleaseFillRequired: "الرجاء ملء جميع الحقول المطلوبة",
+    enterFullName: "أدخل اسمك الكامل",
+    createPassword: "إنشاء كلمة مرور",
+    repeatPassword: "كرر كلمة المرور",
+    enterPassport: "أدخل رقم جواز السفر",
+    selectDate: "اختر التاريخ",
+    selectGender: "اختر",
   },
   home: {
     welcome: "مرحباً بك في بي اتش سي جوبس",

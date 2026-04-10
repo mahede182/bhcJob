@@ -59,6 +59,13 @@ export const bnTranslations = {
     somethingWentWrong: "কিছু ভুল হয়েছে",
     enterCompleteOtp: "অনুগ্রহ করে সম্পূর্ণ ৪-সংখ্যার ওটিপি লিখুন",
     phoneVerified: "ফোন সফলভাবে যাচাই করা হয়েছে!",
+    pleaseFillRequired: "অনুগ্রহ করে সমস্ত আবশ্যক ক্ষেত্র পূরণ করুন",
+    enterFullName: "আপনার পূর্ণ নাম লিখুন",
+    createPassword: "একটি পাসওয়ার্ড তৈরি করুন",
+    repeatPassword: "আপনার পাসওয়ার্ড পুনরাবৃত্তি করুন",
+    enterPassport: "পাসপোর্ট নম্বর লিখুন",
+    selectDate: "তারিখ নির্বাচন করুন",
+    selectGender: "নির্বাচন করুন",
   },
   home: {
     welcome: "বিএইচসি জবস-এ স্বাগতম",

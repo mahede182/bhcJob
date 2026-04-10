@@ -10,6 +10,8 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -96,78 +98,88 @@ export default function SignInScreen() {
     <SafeAreaView
       style={[styles.container, { backgroundColor: colors.background }]}
     >
-      <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        <Header actionLabel={t("auth.signUp")} actionRoute="/sign-up" />
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardAvoidingView}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      >
+        <ScrollView
+          style={styles.scroll}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <Header actionLabel={t("auth.signUp")} actionRoute="/sign-up" />
 
-        <BlueTop />
+          <BlueTop />
 
-        <View style={styles.cardWrapper}>
-          <Animated.View
-            entering={FadeInDown.duration(600)}
-            style={[styles.card, { backgroundColor: colors.surface }]}
-          >
-            {/* User Icon */}
-            <View style={styles.avatarRow}>
-              <View
-                style={[
-                  styles.avatar,
-                  { backgroundColor: colors.surfaceSelected },
-                ]}
-              >
-                <Ionicons name="person" size={24} color={colors.primary} />
+          <View style={styles.cardWrapper}>
+            <Animated.View
+              entering={FadeInDown.duration(600)}
+              style={[styles.card, { backgroundColor: colors.surface }]}
+            >
+              {/* User Icon */}
+              <View style={styles.avatarRow}>
+                <View
+                  style={[
+                    styles.avatar,
+                    { backgroundColor: colors.surfaceSelected },
+                  ]}
+                >
+                  <Ionicons name="person" size={24} color={colors.primary} />
+                </View>
+                <Text style={[styles.cardTitle, { color: colors.text }]}>
+                  {t("auth.signIn")}
+                </Text>
               </View>
-              <Text style={[styles.cardTitle, { color: colors.text }]}>
-                {t("auth.signIn")}
-              </Text>
-            </View>
 
-            <Input
-              label={t("auth.mobileNumber")}
-              placeholder="01XXXXXXXXX"
-              icon="phone-portrait-outline"
-              keyboardType="phone-pad"
-              value={phone}
-              onChangeText={setPhone}
-            />
+              <Input
+                label={t("auth.mobileNumber")}
+                placeholder="01XXXXXXXXX"
+                icon="phone-portrait-outline"
+                keyboardType="phone-pad"
+                value={phone}
+                onChangeText={setPhone}
+              />
 
-            <Input
-              label={t("auth.password")}
-              placeholder={t("auth.password")}
-              icon="lock-closed-outline"
-              secureTextEntry
-              value={password}
-              onChangeText={setPassword}
-            />
+              <Input
+                label={t("auth.password")}
+                placeholder={t("auth.password")}
+                icon="lock-closed-outline"
+                secureTextEntry
+                value={password}
+                onChangeText={setPassword}
+              />
 
-            <TouchableOpacity style={styles.forgotRow}>
-              <Text style={[styles.forgotText, { color: colors.primary }]}>
-                {t("auth.forgotPassword")}
-              </Text>
-            </TouchableOpacity>
-
-            <Button
-              title={t("auth.signIn").toUpperCase()}
-              onPress={handleSignIn}
-              loading={loading}
-            />
-
-            <Divider />
-
-            <View style={styles.switchRow}>
-              <Text
-                style={[styles.switchText, { color: colors.textSecondary }]}
-              >
-                {t("auth.dontHaveAccount")}{" "}
-              </Text>
-              <TouchableOpacity onPress={() => router.push("/sign-up")}>
-                <Text style={[styles.switchLink, { color: colors.primary }]}>
-                  {t("auth.signUp")}
+              <TouchableOpacity style={styles.forgotRow}>
+                <Text style={[styles.forgotText, { color: colors.primary }]}>
+                  {t("auth.forgotPassword")}
                 </Text>
               </TouchableOpacity>
-            </View>
-          </Animated.View>
-        </View>
-      </ScrollView>
+
+              <Button
+                title={t("auth.signIn").toUpperCase()}
+                onPress={handleSignIn}
+                loading={loading}
+              />
+
+              <Divider />
+
+              <View style={styles.switchRow}>
+                <Text
+                  style={[styles.switchText, { color: colors.textSecondary }]}
+                >
+                  {t("auth.dontHaveAccount")}{" "}
+                </Text>
+                <TouchableOpacity onPress={() => router.push("/sign-up")}>
+                  <Text style={[styles.switchLink, { color: colors.primary }]}>
+                    {t("auth.signUp")}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </Animated.View>
+          </View>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 }
@@ -177,8 +189,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F8F9FA",
   },
+  keyboardAvoidingView: {
+    flex: 1,
+  },
   scroll: {
     flex: 1,
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   cardWrapper: {
     paddingHorizontal: Spacing.four,
