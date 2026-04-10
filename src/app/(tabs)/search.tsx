@@ -6,10 +6,11 @@ import {
   Shadows,
   Spacing,
 } from "@/constants/theme";
-import { useTheme } from "@/hooks/useTheme";
 import { useDebounce } from "@/hooks/useDebounce";
+import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ScrollView,
   StyleSheet,
@@ -36,6 +37,7 @@ const RECENT_SEARCHES = [
 
 export default function SearchScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearch = useDebounce(searchQuery, 500);
   return (
@@ -43,10 +45,10 @@ export default function SearchScreen() {
       style={[styles.container, { backgroundColor: colors.background }]}
     >
       <View style={[styles.header, { backgroundColor: colors.primary }]}>
-        <Text style={styles.title}>Find Jobs</Text>
+        <Text style={styles.title}>{t("search.findJobs")}</Text>
         <Input
           label=""
-          placeholder="Search job title, company..."
+          placeholder={t("search.searchPlaceholder")}
           icon="search-outline"
           value={searchQuery}
           onChangeText={setSearchQuery}
@@ -59,7 +61,7 @@ export default function SearchScreen() {
         {/* Recent Searches */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            Recent Searches
+            {t("search.recentSearches")}
           </Text>
           <View style={styles.recentList}>
             {RECENT_SEARCHES.map((search) => (
@@ -82,7 +84,7 @@ export default function SearchScreen() {
         {/* Categories Grid */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: colors.text }]}>
-            Job Categories
+            {t("search.jobCategories")}
           </Text>
           <View style={styles.grid}>
             {CATEGORIES.map((cat) => (

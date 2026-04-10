@@ -1,15 +1,18 @@
-import { Slot, Stack, useRouter, useSegments } from "expo-router";
+import { useHydrate } from "@/hooks/useHydrate";
+import { useTheme } from "@/hooks/useTheme";
+import { useAppSelector } from "@/store/hooks";
+import { store } from "@/store/store";
+import { ThemeProvider } from "@react-navigation/native";
+import { Stack, useRouter, useSegments } from "expo-router";
+import * as SplashScreen from "expo-splash-screen";
+import { StatusBar } from "expo-status-bar";
+import { useEffect } from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Toast from "react-native-toast-message";
 import { Provider } from "react-redux";
-import { store } from "@/store/store";
-import { useHydrate } from "@/hooks/useHydrate";
-import { useAppSelector } from "@/store/hooks";
-import { ThemeProvider } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-import { useTheme } from "@/hooks/useTheme";
-import { useEffect } from "react";
-import * as SplashScreen from "expo-splash-screen";
+
+// Initialize i18n
+import "@/localization/i18n";
 
 SplashScreen.preventAutoHideAsync();
 

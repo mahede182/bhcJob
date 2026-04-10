@@ -5,6 +5,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useGetJobsQuery } from "@/store/api/jobsApi";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   FlatList,
@@ -18,6 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function JobsScreen() {
   const { data: jobs, isLoading: loading } = useGetJobsQuery({});
   const { colors } = useTheme();
+  const { t } = useTranslation();
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: colors.background }]}
@@ -29,10 +31,10 @@ export default function JobsScreen() {
           <View style={styles.titleRow}>
             <View>
               <Text style={[styles.title, { color: colors.text }]}>
-                All Jobs
+                {t("jobs.allJobs")}
               </Text>
               <Text style={styles.subtitle}>
-                {jobs?.length || 0} positions available
+                {t("jobs.positionsAvailable", { count: jobs?.length || 0 })}
               </Text>
             </View>
             <TouchableOpacity style={styles.filterButton}>

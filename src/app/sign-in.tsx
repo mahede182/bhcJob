@@ -8,6 +8,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   ScrollView,
   StyleSheet,
@@ -38,13 +39,14 @@ export default function SignInScreen() {
   const [password, setPassword] = useState("");
   const [login, { isLoading: loading }] = useLoginMutation();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const handleSignIn = async () => {
     if (!phone || !password) {
       showToast({
         type: "error",
-        title: "Error",
-        message: "Please enter phone and password",
+        title: t("common.error"),
+        message: t("auth.pleaseEnterPhonePassword"),
       });
       return;
     }
@@ -62,12 +64,12 @@ export default function SignInScreen() {
 
         showToast({
           type: "success",
-          title: "Welcome back!",
-          message: "Login successful",
+          title: t("common.welcomeBack"),
+          message: t("auth.loginSuccess"),
         });
         router.replace("/(tabs)");
       } else {
-        let errorMessage = response.message || "Invalid credentials";
+        let errorMessage = response.message || t("auth.invalidCredentials");
         if (response.error) {
           const firstKey = Object.keys(response.error)[0];
           if (firstKey && Array.isArray(response.error[firstKey])) {
@@ -77,15 +79,15 @@ export default function SignInScreen() {
 
         showToast({
           type: "error",
-          title: "Login Failed",
+          title: t("auth.loginFailed"),
           message: errorMessage,
         });
       }
     } catch (error: any) {
       showToast({
         type: "error",
-        title: "Network Error",
-        message: error?.data?.message || "Something went wrong during login",
+        title: t("auth.networkError"),
+        message: error?.data?.message || t("auth.somethingWentWrong"),
       });
     }
   };
@@ -95,7 +97,7 @@ export default function SignInScreen() {
       style={[styles.container, { backgroundColor: colors.background }]}
     >
       <ScrollView style={styles.scroll} showsVerticalScrollIndicator={false}>
-        <Header actionLabel="Sign Up" actionRoute="/sign-up" />
+        <Header actionLabel={t("auth.signUp")} actionRoute="/sign-up" />
 
         <BlueTop />
 
@@ -115,12 +117,12 @@ export default function SignInScreen() {
                 <Ionicons name="person" size={24} color={colors.primary} />
               </View>
               <Text style={[styles.cardTitle, { color: colors.text }]}>
-                Sign In
+                {t("auth.signIn")}
               </Text>
             </View>
 
             <Input
-              label="Mobile Number"
+              label={t("auth.mobileNumber")}
               placeholder="01XXXXXXXXX"
               icon="phone-portrait-outline"
               keyboardType="phone-pad"
@@ -129,8 +131,8 @@ export default function SignInScreen() {
             />
 
             <Input
-              label="Password"
-              placeholder="Enter your password"
+              label={t("auth.password")}
+              placeholder={t("auth.password")}
               icon="lock-closed-outline"
               secureTextEntry
               value={password}
@@ -139,11 +141,15 @@ export default function SignInScreen() {
 
             <TouchableOpacity style={styles.forgotRow}>
               <Text style={[styles.forgotText, { color: colors.primary }]}>
-                Forgot Your Password?
+                {t("auth.forgotPassword")}
               </Text>
             </TouchableOpacity>
 
-            <Button title="SIGN IN" onPress={handleSignIn} loading={loading} />
+            <Button
+              title={t("auth.signIn").toUpperCase()}
+              onPress={handleSignIn}
+              loading={loading}
+            />
 
             <Divider />
 
@@ -151,11 +157,11 @@ export default function SignInScreen() {
               <Text
                 style={[styles.switchText, { color: colors.textSecondary }]}
               >
-                Don&apos;t have an account?{" "}
+                {t("auth.dontHaveAccount")}{" "}
               </Text>
               <TouchableOpacity onPress={() => router.push("/sign-up")}>
                 <Text style={[styles.switchLink, { color: colors.primary }]}>
-                  Sign Up
+                  {t("auth.signUp")}
                 </Text>
               </TouchableOpacity>
             </View>
