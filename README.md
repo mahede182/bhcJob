@@ -26,7 +26,11 @@ A modern React Native job search application built with Expo, featuring multi-la
 
 ## Preview
 
-<!-- Add your screenshots here -->
+
+
+https://github.com/user-attachments/assets/15ff3934-e72e-4c2f-ae0e-a11e23505132
+
+
 
 ### Features
 
