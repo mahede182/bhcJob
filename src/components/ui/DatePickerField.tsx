@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
@@ -14,6 +8,7 @@ import { FontSizes, BorderRadius } from "@/constants/theme";
 
 import { type DatePickerFieldProps } from "@/@types/ui.type";
 import { useTheme } from "@/hooks/useTheme";
+import { isIOS, isAndroid } from "@/utils/device";
 
 export default function DatePickerField({
   label,
@@ -28,7 +23,7 @@ export default function DatePickerField({
   const styles = createStyles(colors);
 
   const handleChange = (_event: DateTimePickerEvent, selectedDate?: Date) => {
-    if (Platform.OS === "android") {
+    if (isAndroid) {
       setShow(false);
     }
     if (selectedDate) {
@@ -68,7 +63,7 @@ export default function DatePickerField({
         <DateTimePicker
           value={value || new Date(2000, 0, 1)}
           mode="date"
-          display={Platform.OS === "ios" ? "spinner" : "default"}
+          display={isIOS ? "spinner" : "default"}
           onChange={handleChange}
           maximumDate={new Date()}
           themeVariant={isDark ? "dark" : "light"}

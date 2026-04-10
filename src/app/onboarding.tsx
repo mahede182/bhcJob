@@ -7,19 +7,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
-import {
-  Dimensions,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useTheme } from "@/hooks/useTheme";
-
-const { width } = Dimensions.get("window");
+import { isIOS } from "@/utils/device";
 
 export default function OnboardingScreen() {
   const router = useRouter();
@@ -135,7 +127,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     marginTop: "auto",
-    marginBottom: Platform.OS === "ios" ? 40 : 30,
+    marginBottom: isIOS ? 40 : 30,
     width: "100%",
     gap: 16,
   },

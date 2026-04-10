@@ -26,7 +26,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logOut, selectCurrentUser } from "@/store/slices/authSlice";
 import { storage } from "@/utils/storage";
-import Toast from "react-native-toast-message";
+import { showToast } from "@/utils/toast";
 
 export default function ProfileScreen() {
   const router = useRouter();
@@ -38,17 +38,17 @@ export default function ProfileScreen() {
     try {
       await storage.clearAll();
       dispatch(logOut());
-      Toast.show({
+      showToast({
         type: "info",
-        text1: "Signed Out",
-        text2: "You have been signed out successfully.",
+        title: "Signed Out",
+        message: "You have been signed out successfully.",
       });
       router.replace("/sign-in");
     } catch {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Something went wrong during sign out",
+        title: "Error",
+        message: "Something went wrong during sign out",
       });
     }
   };
@@ -60,13 +60,19 @@ export default function ProfileScreen() {
       if (supported) {
         await Linking.openURL(url);
       } else {
-        Toast.show({
+        showToast({
           type: "error",
-          text1: "Error",
-          text2: "Unable to open blog link",
+          title: "Error",
+          message: "Unable to open blog link",
         });
       }
-    } catch {}
+    } catch {
+      showToast({
+        type: "error",
+        title: "Error",
+        message: "Unable to open blog link",
+      });
+    }
   };
 
   const handleEditProfile = () => {

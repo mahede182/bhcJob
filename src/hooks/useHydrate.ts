@@ -14,6 +14,7 @@ import {
   THEME_STORAGE_KEY,
   type ThemeMode,
 } from "@/store/slices/themeSlice";
+import { AppLogger } from "@/utils/AppLogger";
 
 export const useHydrate = () => {
   const dispatch = useAppDispatch();
@@ -42,7 +43,7 @@ export const useHydrate = () => {
           dispatch(hydrateTheme(savedTheme));
         }
       } catch (error) {
-        console.error("Hydration failed", error);
+        AppLogger.error("Hydration failed", error);
         dispatch(setHydrated());
       }
     };

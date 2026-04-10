@@ -1,8 +1,9 @@
-import { BorderRadius, COLORS, Spacing } from '@/constants/theme';
-import { Ionicons } from '@expo/vector-icons';
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform, View } from 'react-native';
+import { BorderRadius, COLORS, Spacing } from "@/constants/theme";
+import { Ionicons } from "@expo/vector-icons";
+import { Tabs } from "expo-router";
+import React from "react";
+import { View } from "react-native";
+import { isIOS } from "@/utils/device";
 //TODO: use hydrate login
 export default function TabsLayout() {
   return (
@@ -13,22 +14,22 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: COLORS.gray400,
         tabBarLabel: () => null,
         tabBarStyle: {
-          position: 'absolute',
+          position: "absolute",
           marginHorizontal: Spacing.four,
-          bottom: Platform.OS === 'ios' ? 30 : 24,
+          bottom: isIOS ? 30 : 24,
           left: 20,
           right: 20,
           height: 64,
           borderRadius: BorderRadius.lg,
-          backgroundColor: 'rgba(255, 255, 255, 0.96)',
+          backgroundColor: "rgba(255, 255, 255, 0.96)",
           borderTopWidth: 0,
           elevation: 10,
-          shadowColor: '#000',
+          shadowColor: "#000",
           shadowOffset: { width: 0, height: 10 },
           shadowOpacity: 0.1,
           shadowRadius: 20,
           borderWidth: 1,
-          borderColor: 'rgba(255, 255, 255, 0.3)',
+          borderColor: "rgba(255, 255, 255, 0.3)",
           paddingBottom: 0,
         },
       }}
@@ -53,24 +54,27 @@ export default function TabsLayout() {
         name="jobs"
         options={{
           tabBarIcon: ({ color, size }) => (
-            <View style={{
-              width: 50,
-              height: 50,
-              borderRadius: 25,
-              backgroundColor: color === COLORS.primary ? "#fff" : COLORS.primary,
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: -20,
-              elevation: 4,
-              shadowColor: COLORS.primary,
-              shadowOffset: { width: 0, height: 4 },
-              shadowOpacity: 0.3,
-              shadowRadius: 8,
-            }}>
+            <View
+              style={{
+                width: 50,
+                height: 50,
+                borderRadius: 25,
+                backgroundColor:
+                  color === COLORS.primary ? "#fff" : COLORS.primary,
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: -20,
+                elevation: 4,
+                shadowColor: COLORS.primary,
+                shadowOffset: { width: 0, height: 4 },
+                shadowOpacity: 0.3,
+                shadowRadius: 8,
+              }}
+            >
               <Ionicons
                 name="briefcase"
                 size={24}
-                color={color === COLORS.primary ? COLORS.primary : '#FFF'}
+                color={color === COLORS.primary ? COLORS.primary : "#FFF"}
               />
             </View>
           ),

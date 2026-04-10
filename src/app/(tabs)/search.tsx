@@ -7,8 +7,9 @@ import {
   Spacing,
 } from "@/constants/theme";
 import { useTheme } from "@/hooks/useTheme";
+import { useDebounce } from "@/hooks/useDebounce";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
+import React, { useState } from "react";
 import {
   ScrollView,
   StyleSheet,
@@ -35,6 +36,8 @@ const RECENT_SEARCHES = [
 
 export default function SearchScreen() {
   const { colors } = useTheme();
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearch = useDebounce(searchQuery, 500);
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: colors.background }]}
@@ -45,6 +48,8 @@ export default function SearchScreen() {
           label=""
           placeholder="Search job title, company..."
           icon="search-outline"
+          value={searchQuery}
+          onChangeText={setSearchQuery}
         />
       </View>
       <ScrollView

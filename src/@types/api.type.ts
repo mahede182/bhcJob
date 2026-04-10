@@ -41,6 +41,21 @@ export interface JobCity {
   name: string;
 }
 
+export interface Benefit {
+  id: number;
+  name: string;
+}
+
+export interface Skill {
+  id: number;
+  name: string;
+}
+
+export interface Language {
+  id: number;
+  name: string;
+}
+
 export interface Job {
   id: number;
   job_title: string;
@@ -70,8 +85,18 @@ export interface Job {
   working_hours: number | null;
   is_overtime_allowed: number;
   priority: number;
+  job_desc: string;
+  job_requirement: string;
+  recruitment_process: string;
+  min_age: number;
+  max_age: number;
+  edu_title_id: number;
   company: JobCompany;
   category: { id: number; name: string };
   country: { id: number; name: string };
   city: JobCity | null;
+  benefits: Benefit[];
+  soft_skills: Skill[];
+  hard_skills: Skill[];
+  languages: Language[];
 }

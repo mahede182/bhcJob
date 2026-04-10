@@ -29,7 +29,7 @@ import { useLoginMutation } from "@/store/api/authApi";
 import { useAppDispatch } from "@/store/hooks";
 import { setCredentials } from "@/store/slices/authSlice";
 import { storage } from "@/utils/storage";
-import Toast from "react-native-toast-message";
+import { showToast } from "@/utils/toast";
 
 export default function SignInScreen() {
   const router = useRouter();
@@ -41,10 +41,10 @@ export default function SignInScreen() {
 
   const handleSignIn = async () => {
     if (!phone || !password) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Please enter phone and password",
+        title: "Error",
+        message: "Please enter phone and password",
       });
       return;
     }
@@ -60,10 +60,10 @@ export default function SignInScreen() {
 
         dispatch(setCredentials({ user, token }));
 
-        Toast.show({
+        showToast({
           type: "success",
-          text1: "Welcome back!",
-          text2: "Login successful",
+          title: "Welcome back!",
+          message: "Login successful",
         });
         router.replace("/(tabs)");
       } else {
@@ -75,17 +75,17 @@ export default function SignInScreen() {
           }
         }
 
-        Toast.show({
+        showToast({
           type: "error",
-          text1: "Login Failed",
-          text2: errorMessage,
+          title: "Login Failed",
+          message: errorMessage,
         });
       }
     } catch (error: any) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Network Error",
-        text2: error?.data?.message || "Something went wrong during login",
+        title: "Network Error",
+        message: error?.data?.message || "Something went wrong during login",
       });
     }
   };

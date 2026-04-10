@@ -8,6 +8,7 @@ import {
 } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { Image } from "expo-image";
+import { useRouter } from "expo-router";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
@@ -18,6 +19,7 @@ import { formatDeadline, formatFoodAllowance, formatSalary } from "@/utils/job";
 
 export default function JobCard({ job, index }: JobCardProps) {
   const { colors } = useTheme();
+  const router = useRouter();
 
   const salary = formatSalary(job.min_salary, job.max_salary, job.currency);
   const food = formatFoodAllowance(
@@ -28,7 +30,7 @@ export default function JobCard({ job, index }: JobCardProps) {
   const deadline = formatDeadline(job.expiry);
 
   const handleView = () => {
-    // TODO: Navigate to job detail screen
+    router.push(`/job/${job.slug}`);
   };
 
   const handleApply = () => {

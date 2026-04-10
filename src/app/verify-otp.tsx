@@ -19,7 +19,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useAppDispatch } from "@/store/hooks";
 import { setCredentials } from "@/store/slices/authSlice";
 import { storage } from "@/utils/storage";
-import Toast from "react-native-toast-message";
+import { showToast } from "@/utils/toast";
 
 import { type VerifyOtpParams } from "@/@types/auth.type";
 import { useTheme } from "@/hooks/useTheme";
@@ -35,10 +35,10 @@ export default function VerifyOtpScreen() {
 
   const handleVerify = async () => {
     if (otp.length < 4) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Please enter the complete 4-digit OTP",
+        title: "Error",
+        message: "Please enter the complete 4-digit OTP",
       });
       return;
     }
@@ -54,10 +54,10 @@ export default function VerifyOtpScreen() {
 
         dispatch(setCredentials({ user, token }));
 
-        Toast.show({
+        showToast({
           type: "success",
-          text1: "Verified",
-          text2: "Phone verified successfully!",
+          title: "Verified",
+          message: "Phone verified successfully!",
         });
         setTimeout(() => router.replace("/(tabs)"), 800);
       } else {
@@ -70,17 +70,17 @@ export default function VerifyOtpScreen() {
           }
         }
 
-        Toast.show({
+        showToast({
           type: "error",
-          text1: "Verification Failed",
-          text2: errorMessage,
+          title: "Verification Failed",
+          message: errorMessage,
         });
       }
     } catch (error: any) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Network Error",
-        text2:
+        title: "Network Error",
+        message:
           error?.data?.message || "Something went wrong during verification.",
       });
     }
@@ -168,7 +168,7 @@ export default function VerifyOtpScreen() {
             <View
               style={[
                 styles.pulseBox,
-                { backgroundColor: colors.primaryLight },
+                { backgroundColor: COLORS.primaryLight },
               ]}
             />
           </Animated.View>

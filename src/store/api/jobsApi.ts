@@ -11,7 +11,12 @@ export const jobsApi = apiSlice.injectEndpoints({
       transformResponse: (response: ApiResponse<Job[]>) => response.data,
       providesTags: ["Job"],
     }),
+    getJobBySlug: builder.query<Job, string>({
+      query: (slug) => `/single-job/get/${slug}`,
+      transformResponse: (response: ApiResponse<Job>) => response.data,
+      providesTags: (result, error, slug) => [{ type: "Job", id: slug }],
+    }),
   }),
 });
 
-export const { useGetJobsQuery } = jobsApi;
+export const { useGetJobsQuery, useGetJobBySlugQuery } = jobsApi;

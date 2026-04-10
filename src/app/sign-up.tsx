@@ -26,7 +26,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { BlueTop } from "@/components/ui/BlueTop";
 import { useRegisterMutation } from "@/store/api/authApi";
-import Toast from "react-native-toast-message";
+import { showToast } from "@/utils/toast";
 
 import { type SignUpForm } from "@/@types/auth.type";
 import { useTheme } from "@/hooks/useTheme";
@@ -52,19 +52,19 @@ export default function SignUpScreen() {
 
   const handleSignUp = async () => {
     if (!form.phone || !form.password || !form.name || !form.gender) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Please fill in all required fields including Gender",
+        title: "Error",
+        message: "Please fill in all required fields including Gender",
       });
       return;
     }
 
     if (form.password !== form.confirm_password) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Error",
-        text2: "Passwords do not match",
+        title: "Error",
+        message: "Passwords do not match",
       });
       return;
     }
@@ -76,10 +76,10 @@ export default function SignUpScreen() {
       }).unwrap();
 
       if (response.status) {
-        Toast.show({
+        showToast({
           type: "success",
-          text1: "Account Created",
-          text2: "Please verify your phone number",
+          title: "Account Created",
+          message: "Please verify your phone number",
         });
         router.push({
           pathname: "/verify-otp",
@@ -98,17 +98,17 @@ export default function SignUpScreen() {
           }
         }
 
-        Toast.show({
+        showToast({
           type: "error",
-          text1: "Registration Failed",
-          text2: errorMessage,
+          title: "Registration Failed",
+          message: errorMessage,
         });
       }
     } catch (error: any) {
-      Toast.show({
+      showToast({
         type: "error",
-        text1: "Network Error",
-        text2: error?.data?.message || "Something went wrong",
+        title: "Network Error",
+        message: error?.data?.message || "Something went wrong",
       });
     }
   };
