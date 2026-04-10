@@ -1,10 +1,4 @@
-import {
-  BorderRadius,
-  COLORS,
-  FontSizes,
-  Shadows,
-  Spacing,
-} from "@/constants/theme";
+import { COLORS, FontSizes, Shadows, Spacing } from "@/constants/theme";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -18,10 +12,10 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import ProfileStats from "@/components/profile/ProfileStats";
 import MenuItem from "@/components/ui/MenuItem";
 import { BLOG } from "@/constants/api";
 import { PROFILE_STATS } from "@/constants/data";
-import ProfileStats from "@/components/profile/ProfileStats";
 import { useTheme } from "@/hooks/useTheme";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logOut, selectCurrentUser } from "@/store/slices/authSlice";
@@ -127,8 +121,10 @@ export default function ProfileScreen() {
         <View style={styles.menuContainer}>
           <MenuItem icon="document-text-outline" title="My Resume" />
           <MenuItem icon="bookmark-outline" title="Saved Jobs" />
-          <MenuItem icon="notifications-outline" title="Job Alerts" />
-          <MenuItem icon="settings-outline" title="Settings" />
+          {/* <MenuItem icon="notifications-outline" title="Job Alerts" /> */}
+          {/* <MenuItem icon="settings-outline" title="Settings" /> */}
+          <MenuItem icon="color-palette-outline" title="Theme" />
+          <MenuItem icon="language-outline" title="Language" />
           <MenuItem icon="help-circle-outline" title="Help Center" />
           <MenuItem
             icon="newspaper-outline"
