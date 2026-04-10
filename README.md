@@ -1,56 +1,217 @@
-# Welcome to your Expo app 👋
+# BHC Jobs
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+![React Native](https://img.shields.io/badge/React%20Native-61DAFB?style=flat&logo=react&logoColor=black)
+![Expo](https://img.shields.io/badge/Expo-000020?style=flat&logo=expo&logoColor=white)
+![Redux](https://img.shields.io/badge/Redux-764ABC?style=flat&logo=redux&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![i18next](https://img.shields.io/badge/i18next-26A69A?style=flat&logo=i18next&logoColor=white)
 
-## Get started
+A modern React Native job search application built with Expo, featuring multi-language support, dark/light themes, and a premium glassmorphism UI design.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## Tech Stack
 
-2. Start the app
+| Layer | Technologies |
+|-------|-------------|
+| **Framework** | React Native 0.83 · Expo SDK 55 · Expo Router v4 |
+| **State Management** | Redux Toolkit · React Redux · AsyncStorage |
+| **UI/UX** | React Native Reanimated · Expo Glass Effect · React Native Gesture Handler |
+| **Localization** | i18next · react-i18next (EN · BN · AR) |
+| **Forms** | React Native DateTime Picker · KeyboardAvoidingView |
+| **Utilities** | Expo Secure Store · Expo Image · React Native Toast Message |
+| **Dev Tools** | TypeScript · ESLint · Prettier · Husky · lint-staged |
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## Preview
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+<!-- Add your screenshots here -->
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Features
 
-## Get a fresh project
+- **Multi-Language Support** — Full i18n implementation with English, Bangla, and Arabic
+- **Theme System** — Light, Dark, and System Default theme modes with Redux persistence
+- **Glassmorphism UI** — Modern iOS-like bottom tab navigation with glass effects
+- **Authentication Flow** — Sign In, Sign Up, and OTP Verification screens
+- **Job Discovery** — Browse featured jobs, companies, and industries
+- **Search & Filter** — Real-time job search with recent search history
+- **Favorites** — Save and manage favorite job listings
+- **Profile Management** — Resume, saved jobs, settings, and preferences
 
-When you're ready, run:
+---
 
-```bash
-npm run reset-project
+## Project Structure
+
+```
+bhcJob/
+├── src/
+│   ├── @types/           # TypeScript type definitions
+│   ├── app/              # Expo Router screens
+│   │   ├── (tabs)/       # Main tabs: Home, Search, Jobs, Favorite, Profile
+│   │   ├── sign-in.tsx   # Authentication screens
+│   │   ├── sign-up.tsx
+│   │   ├── verify-otp.tsx
+│   │   ├── onboarding.tsx
+│   │   └── _layout.tsx   # Root layout with auth state
+│   ├── components/       # Reusable UI components
+│   │   ├── home/         # JobCard, CompanyCard, IndustryCard
+│   │   ├── profile/      # ProfileStats, ProfileHeader
+│   │   └── ui/           # Button, Input, Header, MenuItem, etc.
+│   ├── constants/        # Theme colors, spacing, typography, mock data
+│   ├── hooks/            # useTheme, useDebounce
+│   ├── localization/       # i18n configuration
+│   │   ├── i18n.ts       # i18next setup with AsyncStorage
+│   │   ├── EN/en.ts      # English translations
+│   │   ├── BN/bn.ts      # Bangla translations
+│   │   └── AR/ar.ts      # Arabic translations
+│   ├── store/            # Redux store
+│   │   ├── slices/       # authSlice, themeSlice, jobSlice
+│   │   └── api/          # RTK Query API endpoints
+│   └── utils/            # Toast helpers, storage, AppLogger
+├── scripts/              # Husky pre-commit scripts
+├── .husky/               # Git hooks
+└── README.md
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-### Other setup steps
+## Getting Started
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### Prerequisites
 
-## Learn more
+- Node.js ≥ 18
+- npm or yarn
+- Expo CLI (optional but recommended)
+- Android Studio / Xcode (for emulators)
 
-To learn more about developing your project with Expo, look at the following resources:
+### Installation
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+# Clone the repository
+git clone <repository-url>
+cd bhcJob
 
-## Join the community
+# Install dependencies
+npm install
 
-Join our community of developers creating universal apps.
+# Or use Expo's install for exact versions
+npx expo install
+```
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### Environment Setup
+
+Create a `.env` file in the root:
+
+```env
+EXPO_PUBLIC_API_URL=https://your-api-url.com
+EXPO_PUBLIC_API_STORAGE=https://your-storage-url.com
+```
+
+### Running the App
+
+```bash
+# Start the development server
+npm start
+
+# Or run on specific platforms
+npm run android
+npm run ios
+npm run web
+```
+
+---
+
+## Key Features Implementation
+
+### 1. Internationalization (i18n)
+
+Complete multi-language support with TypeScript type safety:
+
+- **Three languages**: English (EN), Bangla (BN), Arabic (AR)
+- **Persistent storage**: Selected language saved via AsyncStorage
+- **RTL support**: Arabic layout automatically adjusts
+- **Translation keys**: 100+ keys covering all UI text
+
+> See `src/localization/i18n.ts` and translation files in `src/localization/`
+
+
+### 2. Keyboard Handling
+
+Optimized form UX with KeyboardAvoidingView:
+
+- **Platform behavior** — `padding` for iOS, `height` for Android
+- **Vertical offset** — Accounts for header height (64pt on iOS)
+- **Scrollable forms** — ScrollView with `flexGrow` for long forms
+
+> See `src/app/sign-in.tsx` and `src/app/sign-up.tsx`
+
+### 3. Pre-commit Hooks
+
+Automated code quality with Husky:
+
+```bash
+# On every commit:
+1. Strip console.logs (except logger files)
+2. Run Prettier formatting
+3. Run ESLint with auto-fix
+```
+
+> See `.husky/pre-commit` and `scripts/console.js`
+
+---
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm start` | Start Expo development server |
+| `npm run android` | Start on Android emulator/device |
+| `npm run ios` | Start on iOS simulator/device |
+| `npm run web` | Start on web browser |
+| `npm run lint` | Run ESLint checks |
+| `npm run reset-project` | Reset project to blank state |
+
+---
+
+## Dependencies Highlights
+
+### Core
+- **expo-router** — File-based routing for Expo
+- **redux-toolkit** — Modern Redux with RTK Query
+- **react-i18next** — React integration for i18next
+
+### UI/Animation
+- **react-native-reanimated** — Smooth animations (FadeInDown, etc.)
+- **expo-glass-effect** — iOS glassmorphism effects
+- **react-native-toast-message** — In-app notifications
+
+### Utilities
+- **@react-native-async-storage/async-storage** — Local persistence
+- **expo-secure-store** — Secure token storage
+- **expo-image** — Optimized image loading
+
+---
+
+## Design Philosophy
+
+- **Clean & Professional** — Inspired by Indeed and ZipRecruiter
+- **Glassmorphism** — Modern iOS-style translucent UI
+- **Icon-Only Tabs** — 5-tab navigation without labels for elegance
+- **Spring Animations** — Layout fades and smooth transitions
+- **Mobile-First** — Optimized for job seekers on the go
+
+---
+
+## License
+
+MIT License — feel free to use this project for learning or commercial purposes.
+
+---
+
+## Support
+
+For issues or questions:
+- Check [Expo documentation](https://docs.expo.dev/)
+- Review [React Native docs](https://reactnative.dev/)
+- Open an issue in this repository
