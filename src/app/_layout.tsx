@@ -1,19 +1,23 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Stack } from "expo-router";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Toast from "react-native-toast-message";
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
 
-export default function TabLayout() {
+export default function RootLayout() {
   return (
-    <View style={styles.container}>
-      <Text>Hello World</Text>
-    </View>
-
+    <Provider store={store}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="index" />
+          <Stack.Screen name="onboarding" />
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="sign-in" />
+          <Stack.Screen name="sign-up" />
+          <Stack.Screen name="verify-otp" />
+        </Stack>
+        <Toast />
+      </GestureHandlerRootView>
+    </Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
