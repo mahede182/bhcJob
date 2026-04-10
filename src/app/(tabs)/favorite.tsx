@@ -8,6 +8,7 @@ import {
 import { useTheme } from "@/hooks/useTheme";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   ScrollView,
   StyleSheet,
@@ -29,6 +30,7 @@ const SAVED_JOBS = [
 
 export default function FavoriteScreen() {
   const { colors } = useTheme();
+  const { t } = useTranslation();
   return (
     <SafeAreaView
       style={[styles.container, { backgroundColor: colors.background }]}
@@ -38,8 +40,10 @@ export default function FavoriteScreen() {
         contentContainerStyle={{ paddingBottom: 100 }}
       >
         <View style={[styles.header, { backgroundColor: colors.primary }]}>
-          <Text style={styles.title}>Your Favorites</Text>
-          <Text style={styles.subtitle}>1 saved jobs</Text>
+          <Text style={styles.title}>{t("favorites.yourFavorites")}</Text>
+          <Text style={styles.subtitle}>
+            {t("favorites.savedJobs", { count: SAVED_JOBS.length })}
+          </Text>
         </View>
 
         <View style={styles.list}>
@@ -117,7 +121,7 @@ export default function FavoriteScreen() {
               color={colors.textMuted}
             />
             <Text style={[styles.emptyText, { color: colors.textMuted }]}>
-              No favorite jobs yet
+              {t("favorites.noFavorites")}
             </Text>
           </View>
         )}

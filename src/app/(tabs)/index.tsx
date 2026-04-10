@@ -3,6 +3,7 @@ import { useGetCompaniesQuery } from "@/store/api/companiesApi";
 import { useGetIndustriesQuery } from "@/store/api/industriesApi";
 import { useGetJobsQuery } from "@/store/api/jobsApi";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import {
   ActivityIndicator,
   FlatList,
@@ -30,6 +31,7 @@ export default function HomeScreen() {
   const { data: jobs, isLoading: jobsLoading } = useGetJobsQuery({});
   const { data: companies, isLoading: compLoading } = useGetCompaniesQuery({});
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   return (
     <SafeAreaView
@@ -42,24 +44,26 @@ export default function HomeScreen() {
       >
         <Header
           actionLabel={
-            user ? `Hi, ${(user.name || "User").split(" ")[0]}` : "Sign In"
+            user
+              ? t("home.hiUser", { name: (user.name || "User").split(" ")[0] })
+              : t("home.signIn")
           }
           actionRoute={user ? "/profile" : "/sign-in"}
         />
 
         {/* Modern Search Row */}
         <View style={styles.searchSection}>
-          <Text style={styles.welcomeText}>Find your dream job</Text>
+          <Text style={styles.welcomeText}>{t("home.welcome")}</Text>
           <Input
             label=""
-            placeholder="Search job title or company"
+            placeholder={t("home.searchPlaceholder")}
             icon="search-outline"
           />
         </View>
 
         {/* Popular Industries */}
         <View style={styles.section}>
-          <SectionHeader title="Popular Category" />
+          <SectionHeader title={t("home.featuredJobs")} />
           {indLoading ? (
             <ActivityIndicator color={colors.primary} style={{ padding: 20 }} />
           ) : (
@@ -78,7 +82,7 @@ export default function HomeScreen() {
 
         {/* Recommended Jobs */}
         <View style={styles.section}>
-          <SectionHeader title="Recommended Jobs" />
+          <SectionHeader title={t("home.recentJobs")} />
           {jobsLoading ? (
             <ActivityIndicator color={colors.primary} style={{ padding: 20 }} />
           ) : (
@@ -92,7 +96,7 @@ export default function HomeScreen() {
 
         {/* Popular Companies */}
         <View style={styles.section}>
-          <SectionHeader title="Top Companies" />
+          <SectionHeader title={t("home.viewAll")} />
           {compLoading ? (
             <ActivityIndicator color={colors.primary} style={{ padding: 20 }} />
           ) : (

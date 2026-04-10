@@ -1,22 +1,24 @@
 import Button from "@/components/ui/Button";
 import { APP_INITIALIZED } from "@/constants/config";
 import { COLORS, FontSizes, Spacing } from "@/constants/theme";
+import { useTheme } from "@/hooks/useTheme";
 import { useAppDispatch } from "@/store/hooks";
 import { setFirstLaunch } from "@/store/slices/appSlice";
+import { isIOS } from "@/utils/device";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Image } from "expo-image";
 import { useRouter } from "expo-router";
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Animated, { FadeInDown, FadeInUp } from "react-native-reanimated";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useTheme } from "@/hooks/useTheme";
-import { isIOS } from "@/utils/device";
 
 export default function OnboardingScreen() {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { colors } = useTheme();
+  const { t } = useTranslation();
 
   const handleFinishOnboarding = async (
     targetRoute: "/sign-in" | "/sign-up",
@@ -48,15 +50,14 @@ export default function OnboardingScreen() {
           entering={FadeInDown.delay(600).duration(800)}
           style={[styles.title, { color: colors.text }]}
         >
-          Welcome to BHC Jobs
+          {t("home.welcome")}
         </Animated.Text>
 
         <Animated.Text
           entering={FadeInDown.delay(800).duration(800)}
           style={[styles.description, { color: colors.textSecondary }]}
         >
-          Build your profile, explore and apply to your favourite jobs and get
-          contracted by employers immediately.
+          {t("onboarding.description")}
         </Animated.Text>
 
         <Animated.View
@@ -64,7 +65,7 @@ export default function OnboardingScreen() {
           style={styles.footer}
         >
           <Button
-            title="Get Started"
+            title={t("onboarding.getStarted")}
             onPress={handleGetStarted}
             style={styles.button}
           />
@@ -76,9 +77,9 @@ export default function OnboardingScreen() {
             <Text
               style={[styles.secondaryButtonText, { color: colors.textMuted }]}
             >
-              New here?{" "}
+              {t("onboarding.newHere")}{" "}
               <Text style={[styles.linkText, { color: colors.primary }]}>
-                Create Account
+                {t("onboarding.createAccountPrompt")}
               </Text>
             </Text>
           </TouchableOpacity>
